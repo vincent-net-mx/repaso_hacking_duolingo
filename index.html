@@ -1,0 +1,907 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Ruta de Hacking Ético</title>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@600;700;800&family=Figtree:wght@400;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<style>
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
+--bg:#F1F5F9;--sf:#FFFFFF;--sf2:#E4EAF3;--ink:#17233B;--ink2:#56627A;--line:#D3DCE8;
+--ok:#178A52;--okbg:#DCF3E5;--bad:#C93A35;--badbg:#FBE2E0;
+--blue:#2B6CDF;--yellow:#F0B400;--green:#1F9D62;--red:#DB3F39;--purple:#7448D2;--orange:#EC7A1C;--teal:#0F9DA3;--pink:#D6408A;--indigo:#4050C8}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+--bg:#0E1525;--sf:#172136;--sf2:#22304A;--ink:#E8EEF8;--ink2:#9DABC5;--line:#2C3B58;
+--ok:#4FD08B;--okbg:#153B2A;--bad:#FF7A74;--badbg:#45211F;
+--blue:#5B92F5;--yellow:#F5C231;--green:#3CC083;--red:#F2645F;--purple:#9A78F0;--orange:#F59A4A;--teal:#2EC4CA;--pink:#EE69A9;--indigo:#7685EE}}
+:root[data-theme="dark"]{
+--bg:#0E1525;--sf:#172136;--sf2:#22304A;--ink:#E8EEF8;--ink2:#9DABC5;--line:#2C3B58;
+--ok:#4FD08B;--okbg:#153B2A;--bad:#FF7A74;--badbg:#45211F;
+--blue:#5B92F5;--yellow:#F5C231;--green:#3CC083;--red:#F2645F;--purple:#9A78F0;--orange:#F59A4A;--teal:#2EC4CA;--pink:#EE69A9;--indigo:#7685EE}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*,*::before,*::after{box-sizing:inherit}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 16px/1.5 'Figtree',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;-webkit-tap-highlight-color:transparent}
+h1,h2,h3{font-family:'Bricolage Grotesque','Figtree',system-ui,sans-serif;margin:0;line-height:1.15}
+p{margin:0}
+code{font-family:'JetBrains Mono',ui-monospace,Menlo,Consolas,monospace;font-size:.92em;font-weight:500;background:var(--sf2);padding:1px 6px;border-radius:6px;word-break:break-all}
+button{font-family:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
+.u-blue{--u:var(--blue);--ui:#fff}.u-yellow{--u:var(--yellow);--ui:#2A2000}.u-green{--u:var(--green);--ui:#fff}
+.u-red{--u:var(--red);--ui:#fff}.u-purple{--u:var(--purple);--ui:#fff}.u-orange{--u:var(--orange);--ui:#2A1400}
+.u-teal{--u:var(--teal);--ui:#fff}.u-pink{--u:var(--pink);--ui:#fff}.u-indigo{--u:var(--indigo);--ui:#fff}
+#app{max-width:720px;margin:0 auto;padding:20px 16px 110px}
+.small{font-size:.88rem;color:var(--ink2)}
+.btn{font:700 1rem 'Figtree',system-ui,sans-serif;border:0;border-radius:14px;padding:13px 22px;cursor:pointer;background:var(--u,var(--blue));color:var(--ui,#fff);box-shadow:0 4px 0 color-mix(in srgb,var(--u,var(--blue)) 62%,#000);transition:transform .08s,box-shadow .08s}
+.btn:active:not(:disabled){transform:translateY(3px);box-shadow:0 1px 0 color-mix(in srgb,var(--u,var(--blue)) 62%,#000)}
+.btn:disabled{background:var(--sf2);color:var(--ink2);box-shadow:0 4px 0 var(--line);cursor:not-allowed}
+.btn.ghost{background:var(--sf);color:var(--ink);border:2px solid var(--line);box-shadow:0 4px 0 var(--line);padding:11px 20px}
+.btn.big{width:100%;padding:15px 22px;font-size:1.05rem}
+/* inicio */
+.hero h1{font-size:clamp(2rem,7vw,2.7rem);font-weight:800;letter-spacing:-.02em}
+.hero>p{color:var(--ink2);margin-top:4px}
+.stats{display:flex;flex-wrap:wrap;gap:8px;margin:16px 0 14px}
+.chip{display:inline-flex;align-items:center;gap:6px;background:var(--sf);border:2px solid var(--line);border-radius:99px;padding:5px 14px 5px 10px;font-weight:600;font-size:.92rem}
+.chip svg{width:20px;height:20px}.chip .fl{color:var(--orange)}.chip .sr{color:var(--yellow)}
+.prog{height:12px;background:var(--sf2);border-radius:99px;overflow:hidden;margin-bottom:6px}
+.prog i{display:block;height:100%;background:var(--green);border-radius:99px}
+.next{margin-top:20px;background:var(--sf);border:2px solid var(--u);border-radius:18px;padding:16px 18px;display:flex;gap:14px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+.next h2{font-size:1.3rem;margin-top:2px}
+.unit{margin-top:30px}
+.uh{background:var(--u);color:var(--ui);border-radius:18px;padding:16px 18px;display:flex;justify-content:space-between;align-items:center;gap:12px;box-shadow:0 4px 0 color-mix(in srgb,var(--u) 62%,#000);margin-bottom:22px}
+.uh h2{font-size:1.25rem;font-weight:700}.uh p{font-size:.9rem;opacity:.92}
+.cnt{font:700 .95rem 'JetBrains Mono',monospace;background:rgba(255,255,255,.22);border-radius:99px;padding:3px 12px;flex:none}
+.u-yellow .cnt,.u-orange .cnt{background:rgba(0,0,0,.12)}
+.path{padding:0 2px}
+.les{position:relative;display:grid;grid-template-columns:56px 1fr auto;gap:14px;align-items:center;width:100%;text-align:left;background:none;border:0;padding:0 0 24px;cursor:pointer}
+.les:last-child{padding-bottom:4px}
+.les:not(:last-child)::before{content:'';position:absolute;left:24px;top:46px;bottom:-8px;width:8px;background:var(--u);border-radius:4px}
+.node{position:relative;z-index:1;width:56px;height:56px;border-radius:50%;background:var(--u);color:var(--ui);display:grid;place-items:center;font:800 .98rem 'Bricolage Grotesque',sans-serif;box-shadow:0 4px 0 color-mix(in srgb,var(--u) 62%,#000)}
+.node svg{width:26px;height:26px}
+.node.done{background:var(--sf);color:var(--u);border:4px solid var(--u);box-shadow:none}
+.node.next{outline:5px solid color-mix(in srgb,var(--u) 30%,transparent)}
+.lt{display:flex;flex-direction:column;min-width:0}.lt b{font-weight:700;font-size:1.02rem}.lt small{color:var(--ink2);font-size:.86rem}
+.sts{display:flex;gap:1px}.st svg{width:17px;height:17px;color:var(--line)}.st.on svg{color:var(--yellow)}
+.les:hover .lt b{text-decoration:underline;text-underline-offset:3px}
+/* navegacion */
+#nav{position:fixed;left:0;right:0;bottom:0;z-index:10;background:var(--sf);border-top:2px solid var(--line);padding:6px 10px calc(6px + env(safe-area-inset-bottom,0px))}
+.nav-in{display:flex;gap:6px;max-width:720px;margin:0 auto}
+#nav button{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;background:none;border:2px solid transparent;border-radius:12px;padding:6px 4px;font-weight:600;font-size:.8rem;color:var(--ink2);cursor:pointer}
+#nav button svg{width:24px;height:24px}
+#nav button[aria-current="page"]{color:var(--blue);background:color-mix(in srgb,var(--blue) 12%,var(--sf));border-color:color-mix(in srgb,var(--blue) 35%,transparent)}
+/* repaso y glosario */
+.pg h1{font-size:1.9rem;font-weight:800}.pg>.small{margin:4px 0 18px}
+.card{background:var(--sf);border:2px solid var(--line);border-radius:18px;padding:16px 18px;margin-bottom:14px;display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap}
+.card h2{font-size:1.15rem}
+.pg h3{font-size:1.1rem;margin:26px 0 12px}
+.drills{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:12px}
+.drill{text-align:left;background:var(--sf);border:2px solid var(--line);border-left:10px solid var(--u);border-radius:14px;padding:12px 14px;cursor:pointer;display:flex;flex-direction:column;gap:2px}
+.drill b{font-weight:700}.drill small{color:var(--ink2)}
+.drill:hover{border-color:var(--u)}
+.search{width:100%;font:500 1rem 'Figtree',sans-serif;padding:13px 16px;border-radius:14px;border:2px solid var(--line);background:var(--sf);color:var(--ink);margin-bottom:6px}
+.search:focus{border-color:var(--blue);outline:none}
+.gu{margin-top:22px;color:var(--ink2);font-weight:700;display:flex;align-items:center;gap:8px;font-size:.95rem}
+.gu i{width:14px;height:14px;border-radius:50%;background:var(--u);display:inline-block}
+.term{background:var(--sf);border:2px solid var(--line);border-left:8px solid var(--u);border-radius:12px;padding:10px 14px;margin-top:10px}
+.term b{display:block;font-size:1.02rem}.term span{color:var(--ink2);font-size:.95rem}
+.empty{color:var(--ink2);margin-top:22px}
+/* sesion */
+#lesson{position:fixed;inset:0;z-index:20;background:var(--bg);display:flex;flex-direction:column;padding-top:env(safe-area-inset-top,0px)}
+#lesson[hidden]{display:none}
+#hud{flex:none}
+.l-top{display:flex;align-items:center;gap:14px;padding:14px 16px 6px;max-width:720px;width:100%;margin:0 auto}
+.x{background:none;border:0;cursor:pointer;color:var(--ink2);padding:4px;display:grid;place-items:center;border-radius:10px}.x svg{width:26px;height:26px}
+.bar{flex:1;height:14px;background:var(--sf2);border-radius:99px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--u);border-radius:99px;transition:width .35s}
+.hearts{display:flex;align-items:center;gap:5px;color:var(--red);font-weight:800}.hearts svg{width:26px;height:26px}.hearts.low{animation:pulse 1s infinite}
+@keyframes pulse{50%{opacity:.55}}
+.l-main{flex:1;overflow:auto;padding:16px 16px 24px;max-width:720px;width:100%;margin:0 auto}
+.ins{color:var(--ink2);font-weight:600;font-size:.95rem;margin-bottom:6px}
+.l-q{font-size:clamp(1.3rem,4.6vw,1.75rem);font-weight:700;margin-bottom:22px;line-height:1.3;overflow-wrap:anywhere}
+.l-q code{font-size:.85em}
+.opt{display:flex;gap:12px;align-items:center;width:100%;text-align:left;font:600 1rem 'Figtree',sans-serif;padding:14px 16px;border-radius:14px;background:var(--sf);color:var(--ink);border:2px solid var(--line);box-shadow:0 3px 0 var(--line);cursor:pointer;margin-bottom:12px;overflow-wrap:anywhere}
+.opt .k{width:28px;height:28px;border-radius:8px;border:2px solid var(--line);display:grid;place-items:center;font-size:.82rem;color:var(--ink2);flex:none}
+.opt.sel{border-color:var(--u);background:color-mix(in srgb,var(--u) 12%,var(--sf));box-shadow:0 3px 0 var(--u)}
+.opt.sel .k{border-color:var(--u);color:var(--u)}
+.opt.right{border-color:var(--ok);background:var(--okbg);box-shadow:0 3px 0 var(--ok)}
+.opt.wrong{border-color:var(--bad);background:var(--badbg);box-shadow:0 3px 0 var(--bad)}
+.opt:disabled{cursor:default}
+.tf{display:grid;grid-template-columns:1fr 1fr;gap:12px}.tf .opt{justify-content:center;font-size:1.1rem;padding:22px 10px}
+.txt{width:100%;font:600 1.25rem 'JetBrains Mono',ui-monospace,monospace;padding:16px;border-radius:14px;border:2px solid var(--line);background:var(--sf);color:var(--ink)}
+.txt:focus{border-color:var(--u);outline:none}
+.txt.right{border-color:var(--ok);background:var(--okbg)}.txt.wrong{border-color:var(--bad);background:var(--badbg)}
+.bits{display:grid;grid-template-columns:repeat(8,1fr);gap:6px;margin:10px 0 18px}
+.bit{display:flex;flex-direction:column;align-items:center;gap:6px;padding:10px 0;border-radius:12px;border:2px solid var(--line);background:var(--sf);box-shadow:0 3px 0 var(--line);cursor:pointer;font-family:'JetBrains Mono',monospace;color:var(--ink)}
+.bit .w{font-size:.72rem;color:var(--ink2)}.bit .v{font-size:1.45rem;font-weight:700}
+.bit.on{background:var(--u);color:var(--ui);border-color:var(--u);box-shadow:0 3px 0 color-mix(in srgb,var(--u) 62%,#000)}.bit.on .w{color:inherit;opacity:.85}
+.sum{text-align:center;font:700 1.15rem 'JetBrains Mono',monospace;color:var(--ink2)}.sum b{color:var(--ink)}
+.mtc{display:grid;grid-template-columns:1fr 1fr;gap:10px 12px}
+.mtc .opt{margin:0;padding:12px 12px;font-size:.93rem;min-height:58px;align-items:center}
+.mtc .opt.done{border-color:var(--ok);background:var(--okbg);box-shadow:0 3px 0 var(--ok);opacity:.75}
+.mtc .opt.shake{animation:shake .3s;border-color:var(--bad);background:var(--badbg)}
+@keyframes shake{25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+.zone{min-height:66px;border:2px dashed var(--line);border-radius:14px;padding:10px;display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px;align-content:flex-start}
+.pool{display:flex;flex-wrap:wrap;gap:8px}
+.chip2{font:600 .95rem 'Figtree',sans-serif;background:var(--sf);border:2px solid var(--line);box-shadow:0 3px 0 var(--line);border-radius:12px;padding:9px 13px;cursor:pointer;color:var(--ink);text-align:left}
+.zone .chip2{border-color:var(--u)}
+.l-foot{flex:none;border-top:2px solid var(--line);background:var(--sf);padding:14px 16px calc(14px + env(safe-area-inset-bottom,0px))}
+.foot-in{max-width:720px;margin:0 auto}
+.l-foot.good{background:var(--okbg);border-color:var(--ok)}.l-foot.bad{background:var(--badbg);border-color:var(--bad)}
+.fb{margin-bottom:12px}.fb strong{display:block;font:800 1.2rem 'Bricolage Grotesque',sans-serif}
+.good .fb strong{color:var(--ok)}.bad .fb strong{color:var(--bad)}
+.fb .ans{font-weight:600;margin-top:2px;overflow-wrap:anywhere}.fb p{margin-top:4px;font-size:.95rem;overflow-wrap:anywhere}
+.good .btn{background:var(--ok);color:#fff;box-shadow:0 4px 0 color-mix(in srgb,var(--ok) 60%,#000)}
+.bad .btn{background:var(--bad);color:#fff;box-shadow:0 4px 0 color-mix(in srgb,var(--bad) 60%,#000)}
+.end{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:24px;gap:10px;max-width:520px;margin:0 auto;width:100%}
+.end h1{font-size:2rem;font-weight:800}
+.bigst{display:flex;gap:6px;margin:6px 0}.bigst svg{width:54px;height:54px;color:var(--line)}.bigst .on svg{color:var(--yellow)}
+.res{display:flex;gap:12px;margin:10px 0 18px}.res div{background:var(--sf);border:2px solid var(--line);border-radius:14px;padding:10px 18px;min-width:120px}
+.res b{display:block;font:800 1.5rem 'Bricolage Grotesque',sans-serif}.res span{font-size:.85rem;color:var(--ink2)}
+.end .btn{width:100%;max-width:340px}.end .btn+.btn{margin-top:8px}
+.modal{position:absolute;inset:0;background:rgba(10,16,30,.55);display:grid;place-items:center;padding:20px;z-index:3}
+.modal>div{background:var(--sf);border-radius:18px;padding:22px;max-width:380px;width:100%;display:flex;flex-direction:column;gap:10px}
+.modal h2{font-size:1.25rem}
+@media (max-width:420px){.les{grid-template-columns:52px 1fr auto;gap:12px}.node{width:52px;height:52px}.les:not(:last-child)::before{left:22px}}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+
+</style>
+</head>
+<body>
+<div id="app"></div>
+<nav id="nav" aria-label="Secciones"><div class="nav-in">
+<button data-tab="ruta" aria-current="page"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 20a2 2 0 1 0 0-4 2 2 0 0 0 0 4zM18 8a2 2 0 1 0 0-4 2 2 0 0 0 0 4zM6 16V9a3 3 0 0 1 3-3h7" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>Ruta</button>
+<button data-tab="repaso"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 12a8 8 0 1 1-2.3-5.6M20 4v4h-4" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>Repaso</button>
+<button data-tab="glosario"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h10a4 4 0 0 1 4 4v12H9a4 4 0 0 1-4-4V4zM5 16a4 4 0 0 1 4-4h10" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/></svg>Glosario</button>
+</div></nav>
+<div id="lesson" hidden></div>
+<script>
+/* ===== Constructores de ejercicios ===== */
+const mc=(q,a,w,e='')=>({t:'mc',q,a,w,e});
+const tf=(q,a,e='')=>({t:'tf',q,a,e});
+const mt=(q,p,e='')=>({t:'match',q,p,e});
+const od=(q,s,e='')=>({t:'order',q,s,e});
+const inp=(q,ans,e='',ph='')=>({t:'input',q,ans:Array.isArray(ans)?ans:[ans],e,ph});
+const g=(n,c=1)=>Array(c).fill('g:'+n);
+const UNITS=[
+/* ---------- UNIDAD 1 ---------- */
+{id:1,name:'Fundamentos de seguridad',sub:'CIA, capas, malware y hackers',cable:'blue',lessons:[
+{id:'1.1',name:'Tríada CIA',sub:'Y sus extensiones: autenticidad y no repudio',ex:[
+ mc('¿Qué garantiza la confidencialidad?','Que la información solo sea accesible por entidades autorizadas',['Que los datos no se modifiquen sin autorización','Que los sistemas estén accesibles cuando se necesitan','Que el emisor no pueda negar un mensaje'],'Es el pilar que evita el acceso no autorizado a la información.'),
+ mc('¿Qué garantiza la integridad?','Que los datos no sean alterados ni eliminados sin autorización',['Que solo los usuarios autorizados puedan leerlos','Que el sistema esté siempre en línea','Que se verifique la identidad del emisor'],''),
+ mc('¿Qué garantiza la disponibilidad?','Que sistemas, redes y datos estén accesibles cuando los usuarios legítimos los requieran',['Que los datos viajen cifrados','Que nadie pueda alterar los archivos','Que el remitente sea quien dice ser'],''),
+ mc('¿Qué verifica la autenticidad?','La identidad del remitente o emisor',['Que los datos no hayan cambiado','Que el servicio esté en línea','Que el mensaje esté cifrado'],''),
+ mc('El no repudio impide que...','una entidad niegue haber realizado una acción o enviado un mensaje',['un atacante lea los datos','un servicio deje de responder','un archivo sea modificado en tránsito'],''),
+ mt('Une cada pilar con un mecanismo de control',[['Confidencialidad','Cifrado (AES, RSA) y control de acceso'],['Integridad','Funciones hash (SHA-256) y checksums'],['Disponibilidad','Redundancia y balanceadores de carga'],['Autenticidad','MFA, certificados X.509 y Kerberos'],['No repudio','Bitácoras de auditoría firmadas']]),
+ mt('Une cada pilar con una amenaza común',[['Confidencialidad','Eavesdropping y fugas de datos'],['Integridad','Inyección SQL y tampering de archivos'],['Disponibilidad','DoS/DDoS y ransomware'],['Autenticidad','Spoofing y phishing']]),
+ tf('Un ataque DDoS afecta principalmente la disponibilidad.',true),
+ tf('SHA-256 es un mecanismo de control para la confidencialidad.',false,'Es una función hash: protege la integridad.'),
+ tf('Man-in-the-Middle y eavesdropping amenazan la confidencialidad.',true),
+ tf('La tríada CIA se extiende a cinco pilares al sumar autenticidad y no repudio.',true),
+ ...g('cia',3),...g('ctl',2)]},
+{id:'1.2',name:'Defensa en profundidad',sub:'Las 7 capas de la ciberseguridad',ex:[
+ mc('¿Qué establece la defensa en profundidad?','Que ningún control es infalible, por lo que se usan capas superpuestas',['Que un buen firewall basta','Que solo importa la capa humana','Que se debe proteger únicamente el perímetro'],''),
+ od('Ordena las 7 capas, de la más externa a la más interna',['Humana','Perimetral','Red','Endpoint','Aplicación','Datos','Misión crítica'],'Humana → Perimetral → Red → Endpoint → Aplicación → Datos → Misión crítica.'),
+ mt('Une cada capa con un control típico',[['Humana','Concientización contra ingeniería social'],['Perimetral','Firewalls de borde y WAF'],['Red','VLANs, NIDS y NAC'],['Endpoint','EDR/XDR y hardening'],['Datos','Cifrado y DLP']]),
+ mc('¿En qué capa se ubican las políticas de concientización contra ingeniería social?','Humana',['Perimetral','Datos','Aplicación'],''),
+ mc('El cifrado en reposo y en tránsito pertenece a la capa...','de Datos',['Perimetral','de Red','Humana'],'Data at Rest y Data in Transit.'),
+ mc('NAC y la segmentación con VLANs pertenecen a la capa...','de Red',['Perimetral','de Endpoint','de Datos'],''),
+ mc('EDR/XDR y los parches del SO pertenecen a la capa...','de Endpoint',['de Red','Humana','de Aplicación'],''),
+ mc('¿Cuál es la capa más interna, que protege los activos esenciales del negocio?','Misión crítica',['Datos','Endpoint','Perimetral'],'Procesos clave, propiedad intelectual e infraestructura crítica.'),
+ tf('La validación de entradas y la sanitización pertenecen a la capa de aplicación.',true),
+ tf('El WAF y el firewall de borde pertenecen a la capa de red interna.',false,'Son controles de la capa perimetral.'),
+ tf('DLP (Data Loss Prevention) es un control de la capa de datos.',true),
+ ...g('layer',3)]},
+{id:'1.3',name:'Taxonomía del malware',sub:'Troyanos, gusanos, ransomware y más',ex:[
+ mc('¿Qué malware se autorreplica y se propaga por la red sin interacción del usuario?','Gusano',['Troyano','Adware','Rootkit'],''),
+ mc('¿Qué malware parece legítimo, oculta una carga maliciosa y no se autorreplica?','Troyano',['Gusano','Botnet','Ransomware'],''),
+ mc('El ransomware se caracteriza por...','cifrar los archivos de la víctima y exigir un rescate por la llave',['mostrar publicidad invasiva','ocultar procesos en el kernel','capturar pulsaciones de teclado'],''),
+ mc('¿Qué algoritmos combina un ransomware robusto, por ejemplo?','RSA + AES (cifrado híbrido)',['MD5 + SHA-1','DES + RC4','ROT13 + Base64'],''),
+ mc('Un rootkit suele operar en...','espacio de kernel (Ring 0) o con altos privilegios',['un navegador web','la capa física','una impresora de red'],''),
+ mc('Los equipos zombis de una botnet reciben órdenes de...','un servidor de Comando y Control (C2)',['un servidor DNS','un switch administrable','un firewall de borde'],''),
+ mc('¿Para qué se usa comúnmente una botnet?','Ataques DDoS masivos',['Cifrado de respaldos autorizados','Parchado de sistemas','Auditorías de cumplimiento'],''),
+ mt('Une cada malware con su rasgo',[['Troyano','Parece legítimo y no se autorreplica'],['Gusano','Se propaga solo por la red'],['Spyware / Keylogger','Roba pulsaciones y credenciales'],['Rootkit','Oculta procesos, puertos y archivos'],['Adware','Publicidad no deseada']]),
+ tf('Un gusano necesita que el usuario lo ejecute para propagarse.',false,'Se propaga automáticamente aprovechando vulnerabilidades.'),
+ tf('Un keylogger es un tipo de spyware.',true),
+ ...g('malware',4)]},
+{id:'1.4',name:'Tipos de hackers',sub:'Sombreros, hacktivistas y APT',ex:[
+ mc('¿Qué hacker opera con autorización expresa y apego legal?','White Hat',['Grey Hat','Black Hat','Script Kiddie'],''),
+ mc('¿Quién actúa sin autorización, pero sin dolo destructivo, y suele divulgar la falla?','Grey Hat',['White Hat','Black Hat','Hacktivista'],''),
+ mc('¿Quién actúa al margen de la ley por lucro, espionaje, extorsión o sabotaje?','Black Hat',['White Hat','Grey Hat','Script Kiddie'],''),
+ mc('Atacante de bajo nivel técnico que usa herramientas y scripts de terceros','Script Kiddie',['Hacktivista','APT','White Hat'],''),
+ mc('Atacante motivado por ideologías políticas, sociales o religiosas','Hacktivista',['Script Kiddie','Grey Hat','Black Hat'],''),
+ mc('Grupo con recursos masivos respaldado por un Estado, orientado al espionaje prolongado','Nation-State / APT',['Script Kiddie','Grey Hat','Hacktivista'],''),
+ mc('¿Qué significa APT?','Advanced Persistent Threat',['Automated Penetration Test','Active Protocol Tunnel','Applied Protection Technique'],''),
+ mt('Une cada perfil con su motivación',[['White Hat','Encontrar y remediar fallas con autorización'],['Black Hat','Lucro, espionaje o sabotaje'],['Hacktivista','Causas políticas, sociales o religiosas'],['Script Kiddie','Usar herramientas de terceros sin conocimiento profundo'],['Nation-State / APT','Ciberespionaje y ciberguerra respaldados por un Estado']]),
+ tf('Un pentester profesional firma NDA y trabaja bajo un contrato.',true),
+ tf('Un Grey Hat cuenta con autorización explícita antes de probar.',false,'Actúa sin autorización explícita.'),
+ ...g('hacker',3)]}
+]},
+/* ---------- UNIDAD 2 ---------- */
+{id:2,name:'Frameworks y metodologías',sub:'Kill Chain, ATT&CK, NIST, OWASP y PTES',cable:'yellow',lessons:[
+{id:'2.1',name:'Cyber Kill Chain',sub:'Las 7 fases de un ataque dirigido',ex:[
+ od('Ordena las fases de la Cyber Kill Chain',['Reconocimiento','Armamento','Entrega','Explotación','Instalación','Comando y Control (C2)','Acciones sobre objetivos'],'Reconocimiento → Armamento → Entrega → Explotación → Instalación → C2 → Acciones sobre objetivos.'),
+ mc('¿Quién creó la Cyber Kill Chain?','Lockheed Martin',['MITRE','NIST','OWASP'],''),
+ mc('En la fase de armamento (Weaponization), el atacante...','acopla un exploit con un payload o backdoor',['envía el correo de phishing','instala servicios maliciosos','exfiltra los datos'],''),
+ mc('Enviar un correo de phishing o dejar un USB infectado corresponde a...','Entrega (Delivery)',['Explotación','Armamento','Instalación'],''),
+ mc('Crear servicios maliciosos o tareas programadas para persistir es la fase de...','Instalación',['Entrega','Reconocimiento','C2'],''),
+ mc('Establecer un canal bidireccional con el atacante es la fase de...','Command & Control (C2)',['Explotación','Instalación','Armamento'],''),
+ mc('Exfiltrar datos, cifrarlos o pivotear lateralmente es parte de...','Acciones sobre objetivos',['Entrega','Explotación','Reconocimiento'],''),
+ tf('La Cyber Kill Chain es un modelo secuencial con 7 fases.',true),
+ tf('El OSINT y los escaneos pertenecen a la fase de explotación.',false,'Son parte del reconocimiento.'),
+ mt('Une cada fase con su descripción',[['Reconocimiento','Búsqueda pasiva y activa de información (OSINT, escaneos)'],['Armamento','Exploit + payload en un artefacto malicioso'],['Entrega','Transmitir el artefacto a la víctima'],['Explotación','Ejecutar el exploit sobre una vulnerabilidad'],['Instalación','Lograr persistencia en el host']]),
+ ...g('kill',3)]},
+{id:'2.2',name:'MITRE ATT&CK',sub:'Tácticas, técnicas y procedimientos',ex:[
+ mc('En ATT&CK, ¿qué responde la táctica?','El porqué: el objetivo técnico del atacante',['El cómo: el método específico','El quién: la identidad del atacante','El cuándo: la fecha del ataque'],''),
+ mc('En ATT&CK, ¿qué responde la técnica?','El cómo: el método específico para lograr el objetivo',['El porqué: el objetivo técnico','El quién: la identidad del atacante','El dónde: la ubicación del servidor'],''),
+ mc('¿Qué es un procedimiento en ATT&CK?','La implementación concreta o herramientas usadas por un grupo particular',['El objetivo técnico del atacante','Una lista de vulnerabilidades','Un plan de respuesta a incidentes'],'Ej.: APT29 usando PowerShell con ciertos argumentos.'),
+ mc('¿Qué significan las siglas TTP?','Tácticas, técnicas y procedimientos',['Tráfico, tokens y puertos','Tests, tickets y parches','Tecnologías, terminales y protocolos'],''),
+ mc('`Privilege Escalation` es un ejemplo de...','táctica',['técnica','procedimiento','vulnerabilidad'],'Es un objetivo técnico del atacante.'),
+ mc('`Pass the Hash (T1550.002)` es un ejemplo de...','técnica',['táctica','procedimiento','malware'],'Los códigos T#### identifican técnicas.'),
+ mc('Un grupo APT29 usando PowerShell con ciertos argumentos describe un...','procedimiento',['táctica','técnica','pilar CIA'],''),
+ mt('Une cada nivel con su idea',[['Táctica','¿Por qué? Objetivo técnico'],['Técnica','¿Cómo? Método específico'],['Procedimiento','Implementación concreta de un grupo']]),
+ tf('MITRE ATT&CK es una base de conocimiento de adversarios en entornos reales.',true),
+ tf('ATT&CK describe un único camino lineal que todo ataque debe seguir.',false,'Es una matriz no lineal; la Kill Chain es la secuencial.'),
+ ...g('attck',3)]},
+{id:'2.3',name:'NIST CSF',sub:'Identify, Protect, Detect, Respond, Recover',ex:[
+ od('Ordena las cinco funciones del NIST CSF',['Identify','Protect','Detect','Respond','Recover'],'Identify → Protect → Detect → Respond → Recover.'),
+ mc('¿Qué función incluye la gestión de activos, la gobernanza y la evaluación de riesgos?','Identify',['Protect','Detect','Recover'],''),
+ mc('Control de acceso, concientización y seguridad de datos pertenecen a...','Protect',['Identify','Respond','Recover'],''),
+ mc('El monitoreo continuo y la detección de anomalías pertenecen a...','Detect',['Identify','Protect','Respond'],''),
+ mc('Planes de respuesta a incidentes, mitigación y análisis forense pertenecen a...','Respond',['Detect','Protect','Recover'],''),
+ mc('Restauración de operaciones, resiliencia y lecciones aprendidas pertenecen a...','Recover',['Respond','Identify','Protect'],''),
+ mt('Une cada función con su nombre en español',[['Identify','Identificar'],['Protect','Proteger'],['Detect','Detectar'],['Respond','Responder'],['Recover','Recuperar']]),
+ tf('El NIST CSF busca la gestión continua del riesgo de ciberseguridad.',true),
+ tf('La función Detect se encarga de restaurar las operaciones tras un incidente.',false,'Eso es Recover.'),
+ mc('Ocurre un incidente y se activa el plan de respuesta. ¿En qué función estás?','Respond',['Identify','Protect','Recover'],''),
+ ...g('nist',3)]},
+{id:'2.4',name:'OWASP',sub:'Top 10 y WSTG',ex:[
+ mc('¿Qué es OWASP?','Una comunidad dedicada a mejorar la seguridad de aplicaciones web',['Un estándar de cifrado','Un protocolo de red','Un fabricante de firewalls'],''),
+ mc('¿Qué es el OWASP Top 10?','Una lista periódica de los riesgos más críticos para aplicaciones web',['Un listado de los 10 mejores antivirus','Un estándar de cableado','Una lista de puertos críticos'],''),
+ mc('¿Qué es el WSTG?','Web Security Testing Guide: metodología de pruebas para auditar seguridad web',['Una herramienta de escaneo de puertos','Un firewall de aplicaciones','Un tipo de malware'],''),
+ mc('Una inyección SQL es un ejemplo de riesgo de tipo...','Inyecciones',['Fallas criptográficas','Configuración incorrecta','Autenticación rota'],''),
+ mc('Para auditar una aplicación web con una metodología estandarizada se usa...','OWASP WSTG',['Cyber Kill Chain','NIST CSF','Tríada CIA'],''),
+ tf('El control de acceso defectuoso figura entre los riesgos del OWASP Top 10.',true),
+ tf('OWASP se enfoca en la seguridad de redes de capa 2.',false,'Se enfoca en aplicaciones web.'),
+ tf('El OWASP Top 10 se actualiza periódicamente.',true),
+ tf('El WSTG es una guía de pruebas técnicas para auditar la seguridad web.',true),
+ mt('Une cada riesgo del Top 10 con su idea',[['Inyecciones','Datos no confiables interpretados como comandos'],['Autenticación rota','Fallas al verificar la identidad'],['Fallas criptográficas','Cifrado ausente o débil'],['Configuración incorrecta','Ajustes de seguridad inseguros'],['Control de acceso defectuoso','Usuarios acceden a lo que no deberían']])]},
+{id:'2.5',name:'PTES',sub:'Las 7 fases de una prueba de penetración',ex:[
+ od('Ordena las 7 fases de PTES',['Pre-engagement','Intelligence Gathering','Threat Modeling','Vulnerability Analysis','Exploitation','Post-Exploitation','Reporting'],'Todo pentest empieza acordando el alcance y termina con el informe.'),
+ mc('¿Qué se define en Pre-engagement Interactions?','Alcance (scope), reglas de compromiso (RoE), NDA y acuerdos legales',['Los exploits a utilizar','El informe técnico','Los parches pendientes'],''),
+ mc('¿Qué siglas corresponden a las reglas de compromiso?','RoE',['SLA','IoC','RFC'],'Rules of Engagement.'),
+ mc('Recolectar información sobre dominios, infraestructura y empleados es...','Intelligence Gathering (OSINT)',['Threat Modeling','Exploitation','Reporting'],''),
+ mc('Perfilar los vectores de ataque más probables es...','Threat Modeling',['Vulnerability Analysis','Exploitation','Post-Exploitation'],''),
+ mc('La ejecución controlada de exploits para comprobar la viabilidad del compromiso es...','Exploitation',['Vulnerability Analysis','Post-Exploitation','Threat Modeling'],''),
+ mc('Persistencia, escalada de privilegios y pivoteo son parte de...','Post-Exploitation',['Exploitation','Reporting','Threat Modeling'],''),
+ mc('¿A quién va dirigido el informe ejecutivo?','A los directivos',['A los ingenieros que remedian','Al atacante','Al proveedor de Internet'],'El técnico, con pasos de remediación, es para los ingenieros.'),
+ tf('El informe técnico incluye pasos de remediación para ingenieros.',true),
+ tf('Un pentest profesional puede iniciar sin definir el alcance.',false,'El alcance y las reglas de compromiso se acuerdan primero.'),
+ ...g('ptes',3)]},
+{id:'2.6',name:'Elige el marco',sub:'Cada metodología, para su problema',ex:[
+ mc('Necesitas una lista de los riesgos más críticos de una aplicación web. ¿Qué usas?','OWASP Top 10',['NIST CSF','PTES','MITRE ATT&CK'],''),
+ mc('Quieres describir las técnicas reales de un grupo adversario en una matriz. ¿Qué usas?','MITRE ATT&CK',['Cyber Kill Chain','NIST CSF','OWASP Top 10'],''),
+ mc('Debes estructurar una prueba de penetración profesional de principio a fin. ¿Qué usas?','PTES',['NIST CSF','OWASP Top 10','Tríada CIA'],''),
+ mc('Quieres modelar un ataque dirigido como una secuencia lineal de fases. ¿Qué usas?','Cyber Kill Chain',['MITRE ATT&CK','NIST CSF','PTES'],''),
+ mc('Necesitas organizar la gestión continua del riesgo en cinco funciones. ¿Qué usas?','NIST CSF',['OWASP Top 10','MITRE ATT&CK','PTES'],''),
+ mt('Une cada marco con su enfoque',[['Cyber Kill Chain','Fases secuenciales de un ataque dirigido'],['MITRE ATT&CK','Matriz de TTPs de adversarios reales'],['NIST CSF','5 funciones de gestión del riesgo'],['OWASP','Seguridad de aplicaciones web'],['PTES','7 fases de una prueba de penetración']]),
+ tf('La Cyber Kill Chain es lineal; MITRE ATT&CK es una matriz no lineal.',true),
+ tf('PTES tiene 7 fases y comienza con las interacciones previas al compromiso.',true),
+ tf('El NIST CSF describe las fases de un ataque.',false,'Describe funciones de gestión del riesgo, no fases de ataque.'),
+ tf('Los términos táctica y técnica significan lo mismo en ATT&CK.',false,'Táctica = el porqué; técnica = el cómo.')]}
+]},
+/* ---------- UNIDAD 3 ---------- */
+{id:3,name:'Redes aplicadas',sub:'OSI, TCP/UDP, direcciones, puertos y dispositivos',cable:'green',lessons:[
+{id:'3.1',name:'OSI y TCP/IP',sub:'Capas, PDU y protocolos',ex:[
+ od('Ordena las capas OSI, de la 7 a la 1',['Aplicación','Presentación','Sesión','Transporte','Red','Enlace de datos','Física'],'7 Aplicación, 6 Presentación, 5 Sesión, 4 Transporte, 3 Red, 2 Enlace, 1 Física.'),
+ mt('Une cada capa OSI con su PDU',[['Transporte','Segmento / Datagrama'],['Red','Paquete'],['Enlace de datos','Trama (Frame)'],['Física','Bits'],['Aplicación','Datos']]),
+ mc('¿Qué capa OSI se encarga del enrutamiento lógico y el direccionamiento global?','Red (3)',['Enlace de datos (2)','Transporte (4)','Sesión (5)'],''),
+ mc('Formato, compresión y cifrado de datos ocurren en la capa...','Presentación (6)',['Sesión (5)','Aplicación (7)','Transporte (4)'],''),
+ mc('La gestión y control del diálogo entre aplicaciones es la capa...','Sesión (5)',['Presentación (6)','Transporte (4)','Red (3)'],''),
+ mc('La capa de Enlace de datos maneja direcciones...','físicas (MAC)',['lógicas (IP)','de puerto','de dominio'],''),
+ mc('Las capas OSI 5, 6 y 7 equivalen en TCP/IP a la capa...','Aplicación',['Transporte','Internet','Acceso a red'],''),
+ mc('Las capas OSI 1 y 2 equivalen en TCP/IP a la capa...','Acceso a red',['Internet','Transporte','Aplicación'],''),
+ tf('TLS/SSL pertenece a la capa de presentación (OSI 6).',true),
+ tf('TCP y UDP operan en la capa de red (OSI 3).',false,'Operan en la capa de transporte (4).'),
+ ...g('proto',4)]},
+{id:'3.2',name:'TCP y UDP',sub:'Handshake, flags y escaneos',ex:[
+ od('Ordena el Three-Way Handshake de TCP',['El cliente envía SYN','El servidor responde SYN/ACK','El cliente envía ACK'],'SYN → SYN/ACK → ACK; después se intercambian datos.'),
+ mc('TCP es...','orientado a conexión y confiable',['no orientado a conexión y best-effort','sin ACK ni retransmisión','exclusivo de la capa de red'],''),
+ mc('UDP es...','no orientado a conexión y de tipo best-effort',['orientado a conexión y confiable','el que usa Three-Way Handshake','el que retransmite paquetes perdidos'],'No garantiza orden ni entrega.'),
+ mc('¿Qué servicios usan típicamente UDP?','DNS, streaming, VoIP y DHCP',['FTP, SSH y Telnet','HTTP y HTTPS','SMB y RDP'],''),
+ mt('Une cada flag TCP con su función',[['SYN','Inicia la conexión'],['ACK','Confirma la recepción'],['FIN','Cierre ordenado de la conexión'],['RST','Reinicio inmediato de la conexión'],['PSH','Envío inmediato del buffer']]),
+ mc('El flag URG indica...','datos urgentes prioritarios',['cierre ordenado','reinicio inmediato','confirmación de recepción'],''),
+ mc('El escaneo Xmas envía activos los flags...','FIN, PSH y URG',['SYN, ACK y RST','SYN y FIN','ACK y RST'],''),
+ mc('¿Qué opción de Nmap realiza el escaneo SYN (semiabierto o stealth)?','-sS',['-sA','-sU','-sT'],''),
+ mc('¿Para qué se usa `-sA` en Nmap?','Mapear reglas de firewall',['Detectar el sistema operativo','Descubrir hosts por ARP','Escanear puertos UDP'],''),
+ tf('UDP garantiza el orden y la entrega de los datagramas.',false,'No garantiza orden ni entrega.'),
+ tf('TCP usa ACK y retransmisión para ser confiable.',true),
+ tf('El flag RST reinicia de inmediato una conexión rechazada.',true),
+ ...g('flag',3)]},
+{id:'3.3',name:'IP y MAC',sub:'Direcciones privadas, reservadas y físicas',ex:[
+ mt('Une cada rango privado (RFC 1918) con su máscara',[['10.0.0.0 – 10.255.255.255','/8 (255.0.0.0)'],['172.16.0.0 – 172.31.255.255','/12 (255.240.0.0)'],['192.168.0.0 – 192.168.255.255','/16 (255.255.0.0)']]),
+ mc('Las IP privadas no son enrutables en Internet. ¿Qué necesitan para salir?','NAT',['DHCP','APIPA','ARP'],''),
+ mc('Rango de loopback','127.0.0.0/8',['169.254.0.0/16','224.0.0.0/4','10.0.0.0/8'],'Normalmente 127.0.0.1 (localhost).'),
+ mc('Rango APIPA','169.254.0.0/16',['127.0.0.0/8','192.168.0.0/16','224.0.0.0/4'],''),
+ mc('¿Cuándo un cliente se autoasigna una IP APIPA?','Cuando no recibe respuesta de un servidor DHCP',['Cuando usa NAT','Cuando hay un conflicto de DNS','Cuando se conecta por VPN'],''),
+ mc('Rango multicast (clase D)','224.0.0.0 a 239.255.255.255',['240.0.0.0 a 255.255.255.255','128.0.0.0 a 191.255.255.255','192.0.0.0 a 223.255.255.255'],''),
+ mc('La dirección de broadcast en la red local es...','255.255.255.255',['127.0.0.1','169.254.0.1','0.0.0.0'],''),
+ mc('¿Cuántos bits tiene una dirección MAC?','48',['32','64','128'],'6 bytes: AA:BB:CC:DD:EE:FF.'),
+ mc('En una MAC, los primeros 24 bits son el...','OUI (identifica al fabricante)',['NIC (número de serie)','Gateway','Prefijo de red'],''),
+ mc('En una MAC, los últimos 24 bits son el...','NIC (número de serie del dispositivo)',['OUI (fabricante)','Gateway','Prefijo de red'],''),
+ mc('¿Cuál es un vector de ataque asociado a las direcciones MAC?','MAC Flooding (saturación de la tabla CAM)',['SQL Injection','Phishing','Desbordamiento de búfer'],'También: ARP Spoofing/Poisoning y MAC Spoofing.'),
+ tf('172.32.0.1 es una IP privada de RFC 1918.',false,'El rango privado solo llega a 172.31.255.255.'),
+ ...g('pubPriv',2),...g('reserved',2),...g('mac',2)]},
+{id:'3.4',name:'Puertos y sockets',sub:'Rangos y tipos de puerto',ex:[
+ mc('Un socket es la combinación de...','una dirección IP y un puerto',['una MAC y una IP','un protocolo y un servicio','un puerto y un firewall'],''),
+ mc('¿Cuál es un ejemplo de socket?','192.168.1.100:443',['192.168.1.100/24','AA:BB:CC:DD:EE:FF','192.168.1.100'],''),
+ mt('Une cada rango con su nombre',[['0 – 1023','Well-Known Ports'],['1024 – 49151','Registered Ports'],['49152 – 65535','Dynamic / Ephemeral Ports']]),
+ mc('¿Cuántos puertos existen en total (0 a 65535)?','65,536',['65,535','1,024','49,152'],''),
+ mc('Los puertos efímeros los usan los clientes para...','originar conexiones salientes de forma temporal',['alojar servicios del sistema','registrar aplicaciones ante IANA','cifrar el tráfico'],''),
+ mc('Los registered ports son asignados por...','IANA, para aplicaciones específicas',['el kernel','cada ISP','el cliente'],''),
+ tf('Un socket identifica unívocamente un proceso en comunicación de red.',true),
+ tf('El puerto 3389 es un puerto well-known (0–1023).',false,'Es un puerto registrado (1024–49151).'),
+ tf('Los well-known ports se reservan para servicios del sistema y protocolos estándar.',true),
+ ...g('portRange',4)]},
+{id:'3.5',name:'Servicios críticos',sub:'Puertos y vectores de auditoría',ex:[
+ mt('Une cada servicio con su puerto',[['SSH','22'],['Telnet','23'],['HTTP','80'],['HTTPS','443'],['RDP','3389']]),
+ mt('Une cada servicio con su puerto (2)',[['DNS','53'],['SMB','445'],['NTP','123'],['SNMP','161'],['IMAP','143']]),
+ mc('¿Qué servicios envían tráfico en texto plano y son vulnerables al sniffing de credenciales?','FTP y Telnet',['SSH y HTTPS','SFTP e IMAPS','FTPS y POP3S'],''),
+ mc('La variante segura de FTP es...','FTPS o SFTP (vía SSH)',['Telnet','TFTP','SNMPv1'],''),
+ mc('El DNS usa TCP en lugar de UDP para...','transferencias de zona (AXFR)',['consultas habituales','asignar direcciones IP','sincronizar el reloj'],''),
+ mc('DHCP usa los puertos...','67 (servidor) y 68 (cliente) sobre UDP',['20 y 21 sobre TCP','80 y 443 sobre TCP','161 y 162 sobre UDP'],''),
+ mc('DHCP Starvation y Rogue DHCP Server son ataques contra...','DHCP',['DNS','NTP','SNMP'],''),
+ mc('NTP se ha usado en ataques de amplificación DDoS mediante...','Monlist',['AXFR','EternalBlue','BlueKeep'],''),
+ mc('SNMP v1 y v2c transmiten en texto plano...','las community strings (public, private)',['las llaves privadas','los certificados X.509','los hashes SHA-256'],''),
+ mc('EternalBlue (MS17-010) afectó a...','SMB (445)',['RDP (3389)','SSH (22)','HTTP (80)'],''),
+ mc('BlueKeep (CVE-2019-0708) afectó a...','RDP (3389)',['SMB (445)','SSH (22)','HTTP (80)'],''),
+ mc('En HTTPS (443) se inspeccionan certificados y...','cifrados débiles (SSLv3, TLS 1.0/1.1)',['community strings','zonas DNS','tablas CAM'],''),
+ tf('Telnet es obsoleto y crítico si se detecta en una auditoría.',true),
+ tf('SSH (22) envía las credenciales en texto plano.',false,'Cifra el canal por defecto.'),
+ ...g('portSvc',3),...g('svcPort',3),...g('secureAlt',2)]},
+{id:'3.6',name:'Dispositivos de red y seguridad',sub:'Switch, router, firewall, IDS e IPS',ex:[
+ mc('Un switch reenvía tramas consultando...','la tabla CAM (MAC–puerto)',['la tabla de rutas','la tabla ARP del router','el DNS'],''),
+ mc('Por defecto, un switch mantiene...','un solo dominio de broadcast (a menos que haya VLANs)',['un dominio de broadcast por puerto','ningún dominio de colisión','un dominio por router'],''),
+ mc('Un router divide...','dominios de colisión y de broadcast',['solo dominios de colisión','solo VLANs','ningún dominio'],''),
+ mc('Un router enruta analizando...','direcciones IP (capa 3)',['direcciones MAC (capa 2)','puertos (capa 4)','URLs (capa 7)'],''),
+ mt('Une cada dispositivo con su función',[['Firewall stateless','Filtra paquetes con reglas estáticas, sin recordar el estado'],['Firewall stateful','Usa una tabla de estados de conexiones'],['WAF','Inspecciona tráfico HTTP/HTTPS en capa 7'],['IDS','Detecta y alerta; es pasivo'],['IPS','En línea; bloquea en tiempo real']]),
+ mc('Un IDS suele conectarse a...','un puerto SPAN/Mirror',['un puerto de consola','la línea directa de Internet','una VLAN de gestión'],''),
+ mc('Un IPS se coloca...','en línea (in-line)',['en un puerto SPAN/Mirror','fuera de la red','dentro del endpoint'],''),
+ mc('¿Qué patrones busca un WAF?','XSS, SQLi y CSRF',['ARP spoofing','MAC flooding','Escaneos de puertos UDP'],''),
+ mc('La detección por firmas es ineficaz contra...','ataques de día cero (zero-day)',['ataques ya conocidos','tráfico en texto plano','copias de seguridad'],''),
+ mc('La detección por anomalías puede generar...','falsos positivos',['cifrado débil','tablas CAM llenas','relays abiertos'],''),
+ tf('Un IDS bloquea activamente el tráfico malicioso.',false,'Solo detecta y genera alertas; el IPS bloquea.'),
+ tf('Un firewall stateful aprueba automáticamente paquetes de flujos ya establecidos.',true),
+ tf('Un switch administrable con VLANs puede segmentar dominios de broadcast.',true)]}
+]},
+/* ---------- UNIDAD 4 ---------- */
+{id:4,name:'Sistemas operativos',sub:'Procesos, kernel y espacios de ejecución',cable:'teal',lessons:[
+{id:'4.1',name:'Programas y procesos',sub:'Qué los distingue y qué tiene cada proceso',ex:[
+ mc('¿Qué hace un sistema operativo?','Administra los recursos de hardware y presta servicios a las aplicaciones',['Solo almacena archivos','Solo filtra tráfico de red','Solo cifra los datos'],'Administra CPU, memoria, almacenamiento y periféricos.'),
+ mc('Un programa es...','un conjunto pasivo de instrucciones guardado en disco',['una instancia activa en RAM','un hilo de ejecución','un controlador de dispositivo'],''),
+ mc('Un proceso es...','una instancia activa de un programa cargada en memoria',['un archivo ejecutable en disco','una librería compartida','un puerto abierto'],''),
+ mc('¿Qué identifica de forma única a un proceso?','Su PID',['Su UID','Su MAC','Su GID'],'Process ID.'),
+ mc('UID y GID de un proceso representan...','su contexto de privilegios',['su espacio de memoria','sus hilos','sus variables de entorno'],''),
+ mc('Los hilos (threads) de un mismo proceso comparten...','el mismo espacio de memoria',['la misma pila','los mismos registros','el mismo PID que otro proceso'],'Cada hilo tiene su propia pila y registros.'),
+ mc('Cada hilo tiene su propia...','pila y registros',['memoria virtual completa','tabla de procesos','tabla CAM'],''),
+ mc('El espacio de memoria virtual de un proceso incluye...','Stack, Heap, Data y Text',['solo Stack','BIOS y kernel','solo Heap'],''),
+ mt('Une cada concepto con su definición',[['Programa','Archivo ejecutable pasivo en disco'],['Proceso','Instancia activa en RAM con su propio PID'],['Hilo (thread)','Unidad mínima de ejecución dentro de un proceso'],['PID','Identificador único del proceso'],['UID/GID','Contexto de privilegios del proceso']]),
+ tf('`/bin/bash` guardado en disco es un proceso.',false,'En disco es un programa; al ejecutarse se convierte en proceso.'),
+ tf('Un proceso tiene su propio espacio de direcciones de memoria virtual.',true),
+ tf('Todos los hilos de un proceso comparten el mismo espacio de memoria.',true),
+ tf('Dos procesos distintos comparten por defecto el mismo PID.',false,'Cada proceso tiene un PID único.')]},
+{id:'4.2',name:'Kernel, Ring 0 y Ring 3',sub:'Espacio de kernel y espacio de usuario',ex:[
+ mc('El kernel es...','el núcleo del SO que media entre el software y el hardware',['un antivirus','una aplicación de usuario','un protocolo de red'],''),
+ mc('El Ring 0 corresponde a...','Kernel Space, con privilegios totales',['User Space, con privilegios restringidos','la BIOS','la capa de aplicación'],''),
+ mc('El Ring 3 corresponde a...','User Space, con privilegios restringidos',['Kernel Space, con privilegios totales','el firmware','la capa física'],''),
+ mc('¿Dónde residen los controladores de dispositivos y el planificador de procesos?','En el espacio de kernel',['En el espacio de usuario','En /home','En /tmp'],''),
+ mc('¿Qué espacio ejecuta los navegadores y servicios comunes?','User Space',['Kernel Space','La BIOS','El initramfs'],''),
+ mc('Para acceder al hardware, un proceso de usuario debe solicitar...','una llamada al sistema (syscall)',['un reinicio','acceso directo a la RAM','un cambio de MAC'],''),
+ mc('Una syscall provoca...','una transición de contexto controlada hacia el kernel',['un reinicio del equipo','la eliminación del proceso','un cambio de usuario permanente'],''),
+ mt('Une cada término con su característica',[['Kernel Space','Privilegios totales sobre CPU y memoria'],['User Space','Privilegios restringidos'],['Syscall','Transición controlada hacia el kernel'],['Ring 0','Núcleo, drivers y planificador'],['Ring 3','Aplicaciones y servicios comunes']]),
+ tf('Las aplicaciones de usuario corren en Ring 3.',true),
+ tf('Un rootkit de kernel suele operar en Ring 3.',false,'Opera en Ring 0 o con altos privilegios.'),
+ tf('Una aplicación de usuario puede escribir directamente en el hardware sin pasar por el kernel.',false,'Debe pedirlo mediante una syscall.')]}
+]},
+/* ---------- UNIDAD 5 ---------- */
+{id:5,name:'Linux para seguridad ofensiva',sub:'Filesystem, PATH, comandos y permisos',cable:'red',lessons:[
+{id:'5.1',name:'Jerarquía del filesystem',sub:'Directorios clave (FHS)',ex:[
+ mc('¿Qué directorio es la raíz de todo el sistema de archivos?','/',['/root','/home','/usr'],''),
+ mt('Une cada directorio con su contenido',[['/home','Directorios personales de usuarios'],['/root','Directorio personal del superusuario'],['/etc','Configuración del sistema'],['/var/log','Bitácoras'],['/boot','Kernel e initramfs']]),
+ mt('Une cada directorio con su contenido (2)',[['/bin','Binarios esenciales para todos'],['/sbin','Binarios de administración'],['/dev','Dispositivos como archivos'],['/proc','Estado del kernel y procesos'],['/tmp','Archivos temporales']]),
+ mc('¿Qué directorio es objetivo frecuente de auditorías por sus archivos de configuración?','/etc',['/tmp','/boot','/dev'],''),
+ mc('Los permisos estándar de `/tmp` son...','1777 (escritura universal con sticky bit)',['0700','0644','4755'],''),
+ mc('¿Por qué `/tmp` es un lugar típico para dejar archivos durante una auditoría?','Porque cualquier usuario puede escribir en él',['Porque solo root puede entrar','Porque está cifrado','Porque se ejecuta en Ring 0'],''),
+ mc('`/proc/<PID>` expone...','el estado de un proceso en ejecución',['los logs del sistema','los hashes de contraseñas','las claves SSH'],''),
+ mc('`/dev/null` y `/dev/urandom` son ejemplos de...','nodos de dispositivos',['procesos','librerías compartidas','archivos de configuración'],''),
+ mc('¿Dónde se guardan normalmente las bitácoras?','/var/log',['/etc/log','/tmp/log','/boot/log'],''),
+ tf('`/root` es el directorio personal de los usuarios regulares.',false,'Es el del superusuario; los regulares usan `/home`.'),
+ tf('`/lib` y `/lib64` guardan librerías compartidas esenciales.',true),
+ ...g('dir',4)]},
+{id:'5.2',name:'Variables de entorno y $PATH',sub:'Y el riesgo de PATH Hijacking',ex:[
+ mc('¿Qué guarda `$PATH`?','Directorios donde la shell busca binarios',['Contraseñas del usuario','La ruta del home','El historial de comandos'],''),
+ mc('¿Qué separador usa `$PATH` entre directorios?','Dos puntos (`:`)',['Punto y coma (`;`)','Coma (`,`)','Barra (`/`)'],''),
+ mc('¿Qué comando muestra todas las variables de entorno activas?','`env` o `printenv`',['`ls -la`','`pwd`','`cat /etc/passwd`'],''),
+ mc('¿Cómo se define y exporta una variable a subprocesos?','`export VARIABLE=valor`',['`env VARIABLE`','`cd VARIABLE`','`cat VARIABLE`'],''),
+ mc('`$HOME` contiene...','el directorio personal del usuario',['la shell predeterminada','el usuario actual','la lista de binarios'],''),
+ mc('`$SHELL` indica...','la shell predeterminada',['el directorio personal','el usuario actual','el PID'],''),
+ mc('¿Qué es el PATH Hijacking?','Anteponer en `$PATH` un ejecutable malicioso para que se ejecute en lugar del legítimo',['Robar la variable `$HOME`','Cambiar la dirección MAC','Borrar `/etc/passwd`'],''),
+ mc('¿Qué condición hace posible el PATH Hijacking?','Un binario SUID que ejecuta un comando con ruta relativa y un `$PATH` alterable',['Un binario sin permiso x','Un directorio con sticky bit','Un comando con ruta absoluta'],''),
+ mc('¿Qué logra el atacante con un PATH Hijacking exitoso?','Escalada de privilegios a root',['Borrar la bitácora','Cambiar de red','Cifrar el disco'],''),
+ mt('Une cada variable con lo que contiene',[['$USER','Usuario actual'],['$HOME','Directorio personal'],['$SHELL','Shell predeterminada'],['$PATH','Directorios de búsqueda de binarios']]),
+ tf('Si un comando se invoca con ruta absoluta, la shell no consulta `$PATH`.',true),
+ tf('`$PATH` separa los directorios con punto y coma en Linux.',false,'Usa dos puntos (`:`).')]},
+{id:'5.3',name:'Comandos esenciales',sub:'Navegación, lectura, búsqueda y filtrado',ex:[
+ mt('Une cada comando de navegación con su función',[['pwd','Muestra la ruta de trabajo actual'],['ls -la','Lista todo, incluso ocultos, con permisos'],['cd ..','Sube un nivel'],['cd ~','Va al directorio personal']]),
+ mt('Une cada comando de lectura con su función',[['cat','Muestra el contenido completo'],['less','Paginador interactivo'],['head -n 20','Primeras 20 líneas'],['tail -n 20 -f','Últimas 20 líneas en vivo'],['strings','Cadenas imprimibles de un binario']]),
+ mc('¿Qué comando determina el tipo real de un archivo por su cabecera (magic bytes)?','`file`',['`cat`','`strings`','`head`'],''),
+ mc('¿Cuál busca binarios con el bit SUID activo?','`find / -perm -4000 -type f 2>/dev/null`',['`find / -name "*.conf" 2>/dev/null`','`grep -ri "password" /var/www/html/`','`ls -la /tmp`'],'`-perm -4000` filtra por el bit SUID.'),
+ mc('¿Qué hace `2>/dev/null` al final de un `find`?','Descarta los mensajes de error',['Guarda la salida en un archivo','Ejecuta el comando como root','Ordena los resultados'],''),
+ mc('¿Qué hace `grep -ri "password" /var/www/html/`?','Busca recursivamente, sin distinguir mayúsculas, esa palabra en los archivos',['Elimina las contraseñas','Cifra los archivos','Lista los usuarios del sistema'],'`-r` = recursivo, `-i` = ignora mayúsculas.'),
+ mc('¿Qué extrae `cat /etc/passwd | cut -d: -f1,7`?','El nombre de usuario y su shell',['Los hashes de contraseña','Los grupos con sudo','Los permisos de archivo'],'Campos 1 (usuario) y 7 (shell).'),
+ mc('El símbolo `|` (pipe) sirve para...','enviar la salida de un comando como entrada del siguiente',['guardar la salida en un archivo','ejecutar un comando en segundo plano','comentar una línea'],''),
+ mc('`rm -rf carpeta/` realiza...','una eliminación forzada y recursiva',['una copia recursiva','un renombrado','una búsqueda'],''),
+ mc('Para renombrar un archivo se usa...','`mv viejo.txt nuevo.txt`',['`cp viejo.txt nuevo.txt`','`rm viejo.txt`','`ls viejo.txt`'],''),
+ tf('`tail -f` sigue el archivo mostrando nuevas líneas en vivo.',true),
+ tf('`cd ~` sube un nivel en la jerarquía de directorios.',false,'`cd ..` sube un nivel; `cd ~` va al directorio personal.'),
+ ...g('cmd',4)]},
+{id:'5.4',name:'Permisos y notación octal',sub:'r, w, x para propietario, grupo y otros',ex:[
+ mt('Une cada permiso con su valor octal',[['r (lectura)','4'],['w (escritura)','2'],['x (ejecución)','1']]),
+ mc('Los tres niveles de usuario de un archivo son...','propietario (u), grupo (g) y otros (o)',['root, admin y guest','lectura, escritura y ejecución','kernel, usuario e invitado'],''),
+ mc('El permiso `x` en un directorio permite...','ingresar y atravesarlo (`cd`)',['listar su contenido','borrar archivos','ejecutarlo como programa'],''),
+ mc('El permiso `r` en un directorio permite...','listar sus archivos (`ls`)',['ingresar con `cd`','crear archivos','borrar el directorio'],''),
+ mc('El permiso `w` en un directorio permite...','crear, renombrar o borrar archivos dentro de él',['solo listar su contenido','solo entrar a él','ejecutar sus archivos'],''),
+ mc('`-rwxr-xr--` equivale a...','754',['755','744','645'],'rwx = 7, r-x = 5, r-- = 4.'),
+ tf('`chmod 754 archivo` da al propietario rwx, al grupo r-x y a otros r--.',true),
+ tf('El valor 6 equivale a `r-x`.',false,'6 = rw- (4 + 2); r-x vale 5.'),
+ ...g('permDigit',2),...g('permOctal',3),...g('octalToSym',3)]},
+{id:'5.5',name:'SUID, SGID y Sticky Bit',sub:'Permisos especiales',ex:[
+ mt('Une cada permiso especial con su valor octal',[['SUID','4000'],['SGID','2000'],['Sticky Bit','1000']]),
+ mc('SUID hace que un archivo se ejecute con los privilegios de...','su propietario',['quien lo invoca','el grupo otros','el kernel'],''),
+ mc('¿Por qué `/bin/passwd` tiene SUID?','Porque necesita escribir en `/etc/shadow` como root',['Porque cualquiera puede borrarlo','Porque es un script','Porque corre en Ring 0'],''),
+ mc('`rwsr-xr-x` indica...','SUID activo con permiso de ejecución',['SGID activo','Sticky bit','Ningún permiso especial'],''),
+ mc('`rwSr-xr-x` (con S mayúscula) indica...','SUID activo pero sin permiso x del propietario',['SGID sin x','Sticky bit sin x','Permisos normales 755'],''),
+ mc('SGID aplicado a un directorio hace que...','los archivos nuevos hereden el grupo del directorio',['solo root pueda borrar archivos','los archivos se ejecuten como root','el directorio quede oculto'],''),
+ mc('`rwxrwxrwt` indica...','Sticky bit en un directorio',['SUID en un archivo','SGID en un directorio','Permisos 000'],''),
+ mc('El sticky bit en `/tmp` permite que...','solo el propietario del archivo (o root) lo elimine o renombre',['solo root cree archivos','nadie pueda crear archivos','todos puedan borrar todo'],''),
+ mc('¿Por qué los binarios SUID interesan en una auditoría?','Pueden usarse para escalar privilegios si están mal configurados',['No tienen ningún impacto','Solo sirven para generar logs','Cifran los archivos'],''),
+ tf('SGID en un archivo lo ejecuta con los privilegios del grupo propietario.',true),
+ tf('El sticky bit se aplica típicamente a directorios compartidos.',true),
+ ...g('specialOctal',3)]},
+{id:'5.6',name:'Archivos de identidad',sub:'/etc/passwd, /etc/shadow y /etc/sudoers',ex:[
+ mc('`/etc/passwd` es legible por...','todos los usuarios',['solo root','solo el grupo shadow','nadie'],''),
+ mc('`/etc/shadow` contiene...','hashes de contraseñas, salt y políticas de caducidad',['la lista de shells','las reglas de sudo','las claves SSH'],''),
+ mc('`/etc/shadow` solo puede leerlo...','root',['cualquier usuario','el grupo sudo','el usuario nobody'],''),
+ mc('El campo `x` en `/etc/passwd` indica que...','el hash reside en `/etc/shadow`',['la cuenta está bloqueada','el usuario no tiene shell','la contraseña está vacía'],''),
+ mc('¿Qué define `/etc/sudoers`?','Quién puede ejecutar comandos con privilegios elevados vía sudo',['Las contraseñas de los usuarios','Los grupos de red','Los servicios al arranque'],''),
+ mc('¿Qué comando audita qué puede ejecutar el usuario con sudo?','`sudo -l`',['`sudo -r`','`id -u`','`who -a`'],''),
+ od('Ordena los campos de una línea de `/etc/passwd`',['Usuario','Contraseña (x)','UID','GID','Comentario / nombre','Directorio personal','Shell'],'usuario:x:UID:GID:comentario:home:shell'),
+ mc('En `usuario:x:1001:1001:Nombre:/home/usuario:/bin/bash`, ¿cuál es la shell?','/bin/bash',['/home/usuario','1001','x'],'Es el último campo.'),
+ mc('En esa misma línea, ¿cuál es el directorio personal?','/home/usuario',['/bin/bash','Nombre','x'],'Es el penúltimo campo.'),
+ tf('Los hashes de contraseña se guardan en `/etc/passwd`.',false,'Están en `/etc/shadow`; passwd solo tiene una x.'),
+ tf('`/etc/shadow` es legible por todos los usuarios.',false,'Solo root puede leerlo.'),
+ inp('Escribe el comando que audita tus privilegios de sudo','sudo -l','Muestra qué comandos puedes ejecutar con sudo.','comando')]}
+]},
+/* ---------- UNIDAD 6 ---------- */
+{id:6,name:'Resumen para el examen',sub:'Comparativas y puntos de evaluación frecuentes',cable:'purple',lessons:[
+{id:'6.1',name:'Comparativas frecuentes',sub:'CIA vs AAA, Kill Chain vs ATT&CK y escaneo SYN',ex:[
+ mc('¿Qué significa AAA?','Autenticación, Autorización y Auditoría (Accounting)',['Autenticidad, Accesibilidad y Auditoría','Alta disponibilidad, Autenticación y Acceso','Análisis, Alerta y Acción'],''),
+ mc('¿Qué significa CIA?','Confidencialidad, Integridad y Disponibilidad',['Control, Identidad y Acceso','Cifrado, Integridad y Auditoría','Confianza, Inspección y Alerta'],''),
+ mc('¿Cuál de estos modelos es lineal o secuencial?','Cyber Kill Chain',['MITRE ATT&CK','NIST CSF','OWASP Top 10'],''),
+ mc('¿Qué marco es una matriz no lineal de TTPs reales?','MITRE ATT&CK',['Cyber Kill Chain','PTES','Tríada CIA'],''),
+ mc('El escaneo SYN de Nmap no completa el handshake porque...','envía RST tras recibir el SYN-ACK',['envía FIN tras el SYN','envía ACK y cierra con FIN','envía datos antes del ACK'],''),
+ mc('¿Por qué un escaneo SYN evade registros simples de aplicación?','Porque nunca se establece la conexión completa',['Porque cifra los paquetes','Porque usa UDP','Porque cambia su MAC'],''),
+ mc('Un dispositivo genera alertas sin bloquear el tráfico. ¿Cuál es?','IDS',['IPS','WAF','Firewall stateful'],''),
+ mt('Une cada sigla con su significado',[['CIA','Confidencialidad, Integridad, Disponibilidad'],['AAA','Autenticación, Autorización, Auditoría'],['TTP','Tácticas, técnicas y procedimientos'],['PTES','Penetration Testing Execution Standard'],['IDS / IPS','Detección / Prevención de intrusiones']]),
+ tf('CIA y AAA son el mismo concepto con distinto nombre.',false,'CIA son pilares de seguridad; AAA es control de acceso y auditoría.'),
+ tf('En el escaneo SYN, el cliente envía el ACK final y completa la conexión.',false,'Envía RST tras recibir el SYN-ACK.'),
+ tf('La Cyber Kill Chain es una matriz no lineal.',false,'Es secuencial; la matriz no lineal es ATT&CK.'),
+ ...g('cia',2),...g('kill',2)]}
+]}
+];
+/* ===== Glosario ===== */
+const GLOSS=[
+{t:'Confidencialidad',u:1,d:'Garantiza que la información solo sea accesible por entidades autorizadas. Amenazas: eavesdropping, MitM, fugas. Control: cifrado (AES, RSA), ACL, RBAC.'},
+{t:'Integridad',u:1,d:'Asegura que los datos no se modifiquen, alteren o eliminen sin autorización. Amenazas: inyección SQL, tampering. Control: hash (SHA-256), firmas digitales, checksums.'},
+{t:'Disponibilidad',u:1,d:'Garantiza que sistemas, redes y datos estén accesibles cuando los usuarios legítimos los requieran. Amenazas: DoS/DDoS, ransomware. Control: redundancia, balanceadores, DRP/BCP.'},
+{t:'Autenticidad',u:1,d:'Verificación de la identidad del remitente o emisor. Amenazas: spoofing, phishing. Control: MFA, certificados X.509, Kerberos.'},
+{t:'No repudio',u:1,d:'Imposibilidad de que una entidad niegue haber realizado una acción o enviado un mensaje. Control: firmas digitales y bitácoras de auditoría firmadas.'},
+{t:'Defensa en profundidad',u:1,d:'Principio según el cual ningún control es infalible, por lo que la seguridad se implementa en capas superpuestas: humana, perimetral, red, endpoint, aplicación, datos y misión crítica.'},
+{t:'Troyano',u:1,d:'Programa aparentemente legítimo que oculta una carga maliciosa en segundo plano. No se autorreplica.'},
+{t:'Gusano (Worm)',u:1,d:'Malware que se autorreplica y se propaga por la red aprovechando vulnerabilidades, sin interacción del usuario.'},
+{t:'Spyware / Keylogger',u:1,d:'Recolecta información sensible (pulsaciones de teclado, credenciales, historial) sin consentimiento.'},
+{t:'Rootkit',u:1,d:'Herramientas que ocultan procesos, puertos o archivos maliciosos; suele operar en el kernel (Ring 0) o con altos privilegios.'},
+{t:'Ransomware',u:1,d:'Cifra los archivos de la víctima (p. ej., con RSA + AES) y exige un rescate a cambio de la llave de descifrado.'},
+{t:'Botnet',u:1,d:'Red de equipos comprometidos (zombis) controlados por un servidor de Comando y Control (C2); se usa en DDoS masivos.'},
+{t:'White Hat / Grey Hat / Black Hat',u:1,d:'White: opera con autorización y bajo contrato. Grey: actúa sin autorización pero sin dolo y suele divulgar la falla. Black: opera fuera de la ley por lucro, espionaje, extorsión o sabotaje.'},
+{t:'APT (Advanced Persistent Threat)',u:1,d:'Grupo con recursos masivos respaldado por un Estado, orientado al espionaje y la ciberguerra prolongada.'},
+{t:'Cyber Kill Chain',u:2,d:'Modelo secuencial de Lockheed Martin con 7 fases: reconocimiento, armamento, entrega, explotación, instalación, C2 y acciones sobre objetivos.'},
+{t:'MITRE ATT&CK',u:2,d:'Base de conocimiento de tácticas, técnicas y procedimientos (TTPs) de adversarios reales. Táctica = por qué; técnica = cómo; procedimiento = implementación concreta.'},
+{t:'NIST CSF',u:2,d:'Marco de gestión continua del riesgo con cinco funciones: Identify, Protect, Detect, Respond y Recover.'},
+{t:'OWASP / Top 10 / WSTG',u:2,d:'Comunidad de seguridad de aplicaciones web. El Top 10 lista los riesgos más críticos; el WSTG es la guía estandarizada de pruebas de seguridad web.'},
+{t:'PTES',u:2,d:'Penetration Testing Execution Standard. 7 fases: pre-engagement, intelligence gathering, threat modeling, vulnerability analysis, exploitation, post-exploitation y reporting.'},
+{t:'RoE y Scope',u:2,d:'Reglas de compromiso (Rules of Engagement) y alcance de una prueba de penetración, acordados en la fase de pre-engagement junto con el NDA.'},
+{t:'Modelo OSI',u:3,d:'7 capas: Aplicación, Presentación, Sesión, Transporte, Red, Enlace de datos y Física. PDU: datos, segmento/datagrama, paquete, trama y bits.'},
+{t:'Modelo TCP/IP',u:3,d:'Capas: Aplicación (OSI 5–7), Transporte, Internet y Acceso a red (OSI 1–2).'},
+{t:'TCP',u:3,d:'Transmission Control Protocol. Orientado a conexión y confiable: Three-Way Handshake, ACK, retransmisión y control de congestión.'},
+{t:'UDP',u:3,d:'User Datagram Protocol. Sin conexión y best-effort; rápido y ligero, sin garantía de orden ni entrega. Usos: DNS, streaming, VoIP, DHCP.'},
+{t:'Three-Way Handshake',u:3,d:'SYN del cliente → SYN/ACK del servidor → ACK del cliente. Establece la conexión TCP.'},
+{t:'Flags TCP',u:3,d:'SYN inicia; ACK confirma; FIN cierra ordenadamente; RST reinicia de inmediato; PSH envía el buffer sin esperar; URG marca datos urgentes. Xmas scan: FIN + PSH + URG.'},
+{t:'Escaneo SYN (-sS)',u:3,d:'Escaneo semiabierto o stealth de Nmap: no completa el handshake (envía RST tras el SYN-ACK). Con -sA se mapean reglas de firewall.'},
+{t:'IP privada (RFC 1918)',u:3,d:'10.0.0.0/8, 172.16.0.0/12 y 192.168.0.0/16. No enrutables en Internet; requieren NAT para salir.'},
+{t:'Direcciones reservadas',u:3,d:'Loopback 127.0.0.0/8; APIPA 169.254.0.0/16 (sin respuesta DHCP); multicast 224.0.0.0–239.255.255.255; broadcast 255.255.255.255.'},
+{t:'Dirección MAC',u:3,d:'Identificador físico de 48 bits (AA:BB:CC:DD:EE:FF). Los primeros 24 bits son el OUI (fabricante); los últimos 24, el NIC (número de serie).'},
+{t:'Ataques a MAC y ARP',u:3,d:'ARP Spoofing/Poisoning, MAC Spoofing y MAC Flooding (saturación de la tabla CAM).'},
+{t:'Socket',u:3,d:'Combinación única de dirección IP y puerto (ej. 192.168.1.100:443). Identifica un proceso en comunicación de red.'},
+{t:'Rangos de puertos',u:3,d:'Well-Known 0–1023; Registered 1024–49151 (asignados por IANA); Dynamic/Ephemeral 49152–65535 (clientes en conexiones salientes).'},
+{t:'Servicios en texto plano',u:3,d:'FTP (21), Telnet (23), HTTP (80), SMTP (25), POP3 (110) e IMAP (143). Alternativas: SFTP/FTPS, SSH (22), HTTPS (443), SMTP 587, POP3S 995 e IMAPS 993.'},
+{t:'DNS, DHCP, NTP y SNMP',u:3,d:'DNS 53 (UDP/TCP; AXFR por TCP). DHCP 67/68 UDP (Starvation, Rogue DHCP). NTP 123 UDP (amplificación DDoS, Monlist). SNMP 161/162 UDP (community strings en v1/v2c).'},
+{t:'SMB y RDP',u:3,d:'SMB 445: EternalBlue (MS17-010) y Null Sessions. RDP 3389: fuerza bruta y BlueKeep (CVE-2019-0708).'},
+{t:'Switch',u:3,d:'Reenvía tramas según la tabla CAM (MAC–puerto). Divide dominios de colisión; mantiene un solo dominio de broadcast salvo que haya VLANs.'},
+{t:'Router',u:3,d:'Dispositivo de capa 3 que enruta paquetes entre subredes con direcciones IP. Divide dominios de colisión y de broadcast.'},
+{t:'Firewall (stateless, stateful, WAF)',u:3,d:'Stateless: filtra paquete por paquete con reglas estáticas. Stateful: usa una tabla de estados de conexión. WAF: capa 7, inspecciona HTTP/HTTPS (XSS, SQLi, CSRF).'},
+{t:'IDS vs. IPS',u:3,d:'IDS: pasivo (puerto SPAN/Mirror), detecta y alerta. IPS: en línea, bloquea en tiempo real. Detección por firmas (ineficaz en zero-day) o por anomalías (falsos positivos).'},
+{t:'Sistema operativo',u:4,d:'Software base que administra los recursos de hardware (CPU, memoria, almacenamiento, periféricos) y presta servicios a las aplicaciones.'},
+{t:'Programa',u:4,d:'Conjunto pasivo de instrucciones y datos almacenado como ejecutable en disco.'},
+{t:'Proceso',u:4,d:'Instancia activa de un programa en memoria. Tiene espacio de direcciones propio (Stack, Heap, Data, Text), PID, descriptores de archivo, variables de entorno y UID/GID.'},
+{t:'Hilo (Thread)',u:4,d:'Unidad mínima de ejecución dentro de un proceso. Comparte la memoria del proceso, pero tiene su propia pila y registros.'},
+{t:'Kernel Space (Ring 0)',u:4,d:'Modo con privilegios totales sobre CPU y memoria. Aquí residen el núcleo, los controladores y el planificador de procesos.'},
+{t:'User Space (Ring 3)',u:4,d:'Modo con privilegios restringidos donde corren las aplicaciones. Para acceder al hardware se solicita una llamada al sistema (syscall).'},
+{t:'Syscall',u:4,d:'Llamada al sistema: solicitud de un proceso de usuario al kernel que provoca una transición de contexto controlada.'},
+{t:'FHS (jerarquía de Linux)',u:5,d:'/home (usuarios), /root (superusuario), /bin y /sbin (binarios), /usr, /etc (configuración), /var (datos variables y logs), /tmp (1777), /boot, /lib, /dev y /proc.'},
+{t:'$PATH',u:5,d:'Lista de directorios, separados por «:», donde la shell busca binarios. Si un SUID ejecuta un comando relativo y el PATH es alterable, hay riesgo de PATH Hijacking y escalada a root.'},
+{t:'Variables de entorno',u:5,d:'$USER, $HOME y $SHELL indican usuario, directorio personal y shell. Se listan con env o printenv y se definen con export VARIABLE=valor.'},
+{t:'Comandos de navegación y lectura',u:5,d:'pwd, ls -la, cd; cat, less, head, tail -f, file (magic bytes), strings, cp, mv y rm -rf.'},
+{t:'find y grep',u:5,d:'find / -perm -4000 -type f 2>/dev/null busca binarios SUID. grep -ri "password" ruta/ busca texto de forma recursiva. El pipe (|) encadena comandos.'},
+{t:'Permisos r, w, x',u:5,d:'Lectura 4, escritura 2, ejecución 1; se asignan a propietario (u), grupo (g) y otros (o). Ej.: rwxr-xr-- = chmod 754. En directorios: r lista, w crea/borra, x atraviesa.'},
+{t:'SUID',u:5,d:'Valor 4000. El archivo se ejecuta con los privilegios de su propietario (rwsr-xr-x). Ej.: /bin/passwd. Muy relevante en escalada de privilegios.'},
+{t:'SGID',u:5,d:'Valor 2000. En archivos, se ejecuta con el grupo propietario; en directorios, los archivos nuevos heredan el grupo (rwxr-sr-x).'},
+{t:'Sticky Bit',u:5,d:'Valor 1000. En directorios compartidos como /tmp, solo el propietario del archivo (o root) puede borrarlo o renombrarlo (rwxrwxrwt).'},
+{t:'/etc/passwd',u:5,d:'Legible por todos. Formato usuario:x:UID:GID:comentario:home:shell; la x indica que el hash está en /etc/shadow.'},
+{t:'/etc/shadow',u:5,d:'Solo legible por root. Guarda hashes de contraseñas, salt y políticas de caducidad.'},
+{t:'/etc/sudoers',u:5,d:'Define qué usuarios o grupos ejecutan comandos con privilegios elevados vía sudo. Se audita con sudo -l.'},
+{t:'CIA vs. AAA',u:6,d:'CIA = Confidencialidad, Integridad y Disponibilidad. AAA = Autenticación, Autorización y Auditoría (Accounting).'},
+{t:'Kill Chain vs. ATT&CK',u:6,d:'La Kill Chain es lineal y secuencial; MITRE ATT&CK es una matriz no lineal de TTPs reales.'},
+{t:'Escaneo SYN de Nmap',u:6,d:'No completa el three-way handshake (envía RST tras recibir SYN-ACK) y evade registros simples de aplicación.'}
+];
+
+/* ===== Utilidades ===== */
+'use strict';
+const $=(s,el=document)=>el.querySelector(s);
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const fmt=s=>esc(s).replace(/`([^`]+)`/g,'<code>$1</code>').replace(/\*\*([^*]+)\*\*/g,'<strong>$1</strong>').replace(/\n/g,'<br>');
+const fold=s=>s.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
+const norm=s=>String(s).toLowerCase().replace(/[\s,]/g,'').replace(/^\//,'');
+function rng(seed){let a=seed>>>0;return()=>{a=(a+0x6D2B79F5)>>>0;let t=a;t=Math.imul(t^t>>>15,t|1);t^=t+Math.imul(t^t>>>7,t|61);return((t^t>>>14)>>>0)/4294967296;};}
+const bin8=n=>n.toString(2).padStart(8,'0');
+const ri=(r,a,b)=>a+Math.floor(r()*(b-a+1));
+const pick=(r,a)=>a[Math.floor(r()*a.length)];
+const shuf=(r,a)=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(r()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;};
+const rnd=()=>Math.random();
+const seed=()=>Math.floor(Math.random()*1e9);
+
+/* ===== Generadores de ejercicios ===== */
+const GEN={};
+/* Opción múltiple a partir de una lista [nombre, descripción]. ask='key' pregunta el nombre; 'val' pregunta la descripción. */
+const mcFrom=(list,q,ask)=>r=>{
+  const it=pick(r,list);
+  const others=shuf(r,list.filter(o=>o!==it)).slice(0,3);
+  const k=ask==='key';
+  return{t:'mc',q:q(k?it[1]:it[0]),a:k?it[0]:it[1],w:others.map(o=>k?o[0]:o[1]),e:`**${it[0]}**: ${it[1]}.`};};
+
+const PIL=['Confidencialidad','Integridad','Disponibilidad','Autenticidad','No repudio'];
+const CIA_SC=[
+ ['Un atacante intercepta el tráfico de una red Wi-Fi y lee los mensajes','Confidencialidad','Es eavesdropping: se accede a información sin autorización.'],
+ ['Una fuga de datos expone la base de clientes de la empresa','Confidencialidad','Información accesible a quien no estaba autorizado.'],
+ ['Alguien modifica el monto de una transferencia mientras viaja por la red','Integridad','Los datos fueron alterados sin autorización.'],
+ ['Una inyección SQL altera registros de la base de datos','Integridad','Se modificaron datos sin autorización.'],
+ ['Un ataque DDoS deja el sitio web fuera de servicio','Disponibilidad','Los usuarios legítimos ya no pueden acceder al servicio.'],
+ ['El ransomware cifra los servidores y nadie puede trabajar','Disponibilidad','Los datos dejan de estar accesibles cuando se necesitan.'],
+ ['Un correo de phishing suplanta al remitente de un banco','Autenticidad','Se falsifica la identidad del emisor (spoofing).'],
+ ['Un atacante se hace pasar por un servidor legítimo','Autenticidad','La identidad del emisor no es genuina.'],
+ ['Un usuario niega haber enviado una orden de compra, pero la bitácora firmada prueba lo contrario','No repudio','La entidad no puede negar la acción realizada.']];
+GEN.cia=r=>{const s=pick(r,CIA_SC);return{t:'mc',q:`¿Qué pilar de seguridad se ve afectado o protegido aquí?\n**${s[0]}**`,a:s[1],w:shuf(r,PIL.filter(p=>p!==s[1])).slice(0,3),e:s[2]};};
+const CTL=[['Cifrado con AES o RSA','Confidencialidad'],['Listas de control de acceso (ACL)','Confidencialidad'],['Funciones hash como SHA-256','Integridad'],['Checksums de archivos','Integridad'],['Balanceadores de carga y redundancia','Disponibilidad'],['Planes DRP/BCP','Disponibilidad'],['MFA (autenticación multifactor)','Autenticidad'],['Certificados X.509 y Kerberos','Autenticidad'],['Bitácoras de auditoría firmadas','No repudio']];
+GEN.ctl=r=>{const s=pick(r,CTL);return{t:'mc',q:`¿Qué pilar refuerza principalmente este mecanismo?\n**${s[0]}**`,a:s[1],w:shuf(r,PIL.filter(p=>p!==s[1])).slice(0,3),e:`${s[0]} → ${s[1]}.`};};
+
+const LAYERS=['Humana','Perimetral','Red','Endpoint','Aplicación','Datos','Misión crítica'];
+const LAY=[['Capacitar a los empleados contra el phishing','Humana'],['Definir políticas corporativas y roles','Humana'],['Instalar un firewall de borde','Perimetral'],['Proteger el acceso con un WAF','Perimetral'],['Segmentar la red con VLANs','Red'],['Implementar NAC (Network Access Control)','Red'],['Instalar EDR en las estaciones de trabajo','Endpoint'],['Aplicar parches del SO y hardening','Endpoint'],['Sanitizar las entradas de un formulario web','Aplicación'],['Seguir un ciclo de desarrollo seguro (SDLC)','Aplicación'],['Cifrar una base de datos en reposo','Datos'],['Aplicar políticas DLP','Datos'],['Proteger la propiedad intelectual y los procesos clave','Misión crítica']];
+GEN.layer=r=>{const s=pick(r,LAY);return{t:'mc',q:`¿En qué capa de la defensa en profundidad se ubica este control?\n**${s[0]}**`,a:s[1],w:shuf(r,LAYERS.filter(l=>l!==s[1])).slice(0,3),e:`${s[0]} → capa ${s[1]}.`};};
+
+const MAL=[['Troyano','Programa aparentemente legítimo que oculta una carga maliciosa; no se autorreplica'],['Gusano','Se autorreplica y se propaga por la red sin interacción del usuario'],['Adware','Despliega publicidad no deseada de forma invasiva'],['Spyware / Keylogger','Recolecta pulsaciones, credenciales e historial sin consentimiento'],['Rootkit','Oculta procesos, puertos o archivos maliciosos con altos privilegios'],['Ransomware','Cifra los archivos de la víctima y exige un rescate por la llave'],['Botnet','Red de equipos zombis controlados desde un servidor C2']];
+GEN.malware=mcFrom(MAL,d=>`¿Qué tipo de malware es este?\n**${d}**`,'key');
+const HAK=[['White Hat','Profesional con contrato, NDA y autorización expresa'],['Grey Hat','Actúa sin autorización, sin dolo, y suele divulgar la falla'],['Black Hat','Opera fuera de la ley por lucro, espionaje, extorsión o sabotaje'],['Script Kiddie','Bajo nivel técnico; usa herramientas y scripts de terceros'],['Hacktivista','Motivado por ideologías políticas, sociales o religiosas'],['Nation-State / APT','Recursos masivos respaldados por un Estado; espionaje prolongado']];
+GEN.hacker=mcFrom(HAK,d=>`¿Qué perfil de atacante describe esto?\n**${d}**`,'key');
+
+const KILL=[['Reconocimiento','Búsqueda pasiva y activa de información sobre el objetivo (OSINT, escaneos)'],['Armamento','Acoplar un exploit con un payload o backdoor en un artefacto malicioso'],['Entrega','Transmitir el artefacto a la víctima (phishing, USB, enlace)'],['Explotación','Ejecutar el exploit aprovechando una vulnerabilidad de software o humana'],['Instalación','Lograr persistencia en el host (servicios, tareas programadas, rootkits)'],['Comando y Control (C2)','Establecer un canal bidireccional con el atacante'],['Acciones sobre objetivos','Exfiltrar, destruir o cifrar datos, o moverse lateralmente']];
+GEN.kill=mcFrom(KILL,d=>`En la Cyber Kill Chain, ¿qué fase es esta?\n**${d}**`,'key');
+const PTES=[['Pre-engagement Interactions','Delimitar el alcance, las reglas de compromiso, el NDA y los acuerdos legales'],['Intelligence Gathering (OSINT)','Recolectar información sobre red, dominios, infraestructura y empleados'],['Threat Modeling','Definir y perfilar los vectores de ataque más probables'],['Vulnerability Analysis','Identificar vulnerabilidades y configuraciones deficientes'],['Exploitation','Ejecutar exploits de forma controlada para comprobar el compromiso'],['Post-Exploitation','Persistencia, escalada de privilegios, evidencia y pivoteo'],['Reporting','Redactar el informe ejecutivo y el técnico con pasos de remediación']];
+GEN.ptes=mcFrom(PTES,d=>`En PTES, ¿qué fase es esta?\n**${d}**`,'key');
+const NIST=[['Identify','Gestión de activos, gobernanza y evaluación de riesgos'],['Protect','Control de acceso, concientización y seguridad de datos'],['Detect','Monitoreo continuo y detección de anomalías'],['Respond','Respuesta a incidentes, mitigación y análisis forense'],['Recover','Restauración de operaciones, resiliencia y lecciones aprendidas']];
+GEN.nist=r=>{const it=pick(r,NIST);const o=shuf(r,NIST.filter(x=>x!==it)).slice(0,3);return{t:'mc',q:`En el NIST CSF, ¿qué función es esta?\n**${it[1]}**`,a:it[0],w:o.map(x=>x[0]),e:`**${it[0]}**: ${it[1]}.`};};
+const ATT=[['Initial Access','táctica'],['Privilege Escalation','táctica'],['Lateral Movement','táctica'],['Phishing (T1566)','técnica'],['Pass the Hash (T1550.002)','técnica']];
+GEN.attck=r=>{const s=pick(r,ATT);return{t:'mc',q:`En MITRE ATT&CK, \`${s[0]}\` es una...`,a:s[1],w:['táctica','técnica','procedimiento'].filter(x=>x!==s[1]),e:s[1]==='táctica'?'Es el objetivo técnico del atacante: el porqué.':'Es el método específico usado para lograr un objetivo: el cómo.'};};
+
+const OSIL=['Aplicación (7)','Presentación (6)','Sesión (5)','Transporte (4)','Red (3)','Enlace de datos (2)','Física (1)'];
+const PRO=[['HTTP','Aplicación (7)'],['SSH','Aplicación (7)'],['DNS','Aplicación (7)'],['SMTP','Aplicación (7)'],['SSL/TLS','Presentación (6)'],['JPEG','Presentación (6)'],['RPC','Sesión (5)'],['NetBIOS','Sesión (5)'],['TCP','Transporte (4)'],['UDP','Transporte (4)'],['IP','Red (3)'],['ICMP','Red (3)'],['Ethernet','Enlace de datos (2)'],['Wi-Fi (802.11)','Enlace de datos (2)'],['Cables y conectores','Física (1)']];
+GEN.proto=r=>{const s=pick(r,PRO);return{t:'mc',q:`¿En qué capa del modelo OSI trabaja \`${s[0]}\`?`,a:s[1],w:shuf(r,OSIL.filter(l=>l!==s[1])).slice(0,3),e:`${s[0]} → capa ${s[1]}.`};};
+const FLG=[['SYN','Inicia una conexión'],['ACK','Confirma la recepción'],['FIN','Cierre ordenado de la conexión'],['RST','Reinicio inmediato de la conexión'],['PSH','Solicita el envío inmediato del buffer'],['URG','Marca datos urgentes prioritarios']];
+GEN.flag=mcFrom(FLG,d=>`¿Qué flag TCP cumple esta función?\n**${d}**`,'key');
+
+/* Direcciones IP (pública, privada y reservadas) */
+const TY={pub:'Pública',priv:'Privada',loop:'Loopback',apipa:'APIPA / Link-local',bcast:'Broadcast local',multi:'Multicast (clase D)'};
+function mkIp(r,k){
+  const h=()=>ri(r,1,254),x=()=>ri(r,0,255);
+  if(k==='priv'){const f=ri(r,0,2);
+    if(f===0)return[`10.${x()}.${x()}.${h()}`,'Está en 10.0.0.0/8 (rango privado, clase A).'];
+    if(f===1){const s=ri(r,16,31);return[`172.${s}.${x()}.${h()}`,`172.16.0.0/12 cubre de 172.16 a 172.31; aquí el 2.º octeto es ${s} → privada.`];}
+    return[`192.168.${x()}.${h()}`,'Está en 192.168.0.0/16 (rango privado, clase C).'];}
+  if(k==='pub'){const f=r();
+    if(f<.25){const s=pick(r,[15,32,48,200]);return[`172.${s}.${x()}.${h()}`,`El rango privado solo llega de 172.16 a 172.31; 172.${s} queda fuera → pública.`];}
+    if(f<.4){const s=pick(r,[167,169,170]);return[`192.${s}.${x()}.${h()}`,`El rango privado es 192.168.0.0/16; 192.${s} no pertenece a él → pública.`];}
+    return[`${pick(r,[8,23,34,52,66,74,93,142,187,189,200,201,205,212])}.${x()}.${x()}.${h()}`,'No pertenece a ningún rango privado ni reservado → pública.'];}
+  if(k==='loop')return[r()<.5?'127.0.0.1':`127.${x()}.${x()}.${h()}`,'Todo el bloque 127.0.0.0/8 es loopback (el propio host).'];
+  if(k==='apipa')return[`169.254.${h()}.${h()}`,'169.254.0.0/16: el equipo se la autoasigna cuando no recibe respuesta de un servidor DHCP.'];
+  if(k==='bcast')return['255.255.255.255','255.255.255.255 es el broadcast local.'];
+  return[`${ri(r,224,239)}.${x()}.${x()}.${h()}`,'El primer octeto está en 224–239 → clase D, multicast.'];}
+GEN.pubPriv=r=>{const k=pick(r,['pub','priv']);const [s,e]=mkIp(r,k);return{t:'mc',q:`¿\`${s}\` es una IP pública o privada?`,a:TY[k],w:[TY[k==='pub'?'priv':'pub']],e};};
+GEN.reserved=r=>{const k=pick(r,['loop','apipa','bcast','multi','priv','pub']);const [s,e]=mkIp(r,k);
+  return{t:'mc',q:`¿Qué tipo de dirección es \`${s}\`?`,a:TY[k],w:shuf(r,Object.keys(TY).filter(z=>z!==k)).slice(0,3).map(z=>TY[z]),e};};
+const hx2=r=>ri(r,0,255).toString(16).toUpperCase().padStart(2,'0');
+GEN.mac=r=>{const b=Array.from({length:6},()=>hx2(r));const mac=b.join(':');const oui=r()<.5;
+  const exp=(oui?b.slice(0,3):b.slice(3)).join(':');
+  return{t:'input',q:`En la MAC \`${mac}\`, ¿cuál es el **${oui?'OUI** (identifica al fabricante)':'NIC** (número de serie del dispositivo)'}? Escribe los 3 bytes.`,
+    check:v=>v.replace(/[^0-9a-f]/gi,'').toUpperCase()===exp.replace(/:/g,''),show:exp,
+    e:'Los primeros 24 bits (3 bytes) son el OUI, que identifica al fabricante; los últimos 24 bits son el NIC, el número de serie del dispositivo.',ph:'AA:BB:CC'};};
+
+/* Puertos y servicios */
+const PSV=[['FTP',21],['SSH',22],['Telnet',23],['SMTP',25],['DNS',53],['HTTP',80],['POP3',110],['NTP',123],['IMAP',143],['SNMP',161],['HTTPS',443],['SMB',445],['RDP',3389]];
+GEN.portSvc=r=>{const s=pick(r,PSV);return{t:'mc',q:`¿Qué servicio usa normalmente el puerto \`${s[1]}\`?`,a:s[0],w:shuf(r,PSV.filter(x=>x!==s)).slice(0,3).map(x=>x[0]),e:`${s[0]} usa el puerto ${s[1]}.`};};
+const SVP={FTP:['21','20'],SSH:['22'],Telnet:['23'],SMTP:['25','587'],DNS:['53'],HTTP:['80'],POP3:['110'],NTP:['123'],IMAP:['143'],SNMP:['161'],HTTPS:['443'],SMB:['445'],RDP:['3389']};
+GEN.svcPort=r=>{const s=pick(r,PSV);const a=SVP[s[0]];return{t:'input',q:`¿Qué puerto usa **${s[0]}**?`,ans:a,e:`${s[0]} → ${a.join(' / ')}.`,ph:'número'};};
+GEN.portRange=r=>{const R=['Well-Known (0–1023)','Registered (1024–49151)','Dynamic / Ephemeral (49152–65535)'];
+  const i=pick(r,[0,0,1,1,2]);const p=i===0?pick(r,[21,22,53,80,443,25,110]):i===1?pick(r,[1433,3306,3389,5432,8080,8443]):ri(r,49152,65535);
+  return{t:'mc',q:`¿En qué rango cae el puerto \`${p}\`?`,a:R[i],w:R.filter((_,j)=>j!==i),e:`${p} está en ${R[i]}.`};};
+const SEC=[['HTTP',80,'HTTPS',443],['POP3',110,'POP3S',995],['IMAP',143,'IMAPS',993],['Telnet',23,'SSH',22],['SMTP',25,'SMTP con autenticación/TLS',587],['FTP',21,'SFTP (vía SSH)',22]];
+GEN.secureAlt=r=>{const s=pick(r,SEC);return{t:'input',q:`**${s[0]}** (puerto ${s[1]}) viaja en texto claro. ¿Qué puerto usa su alternativa segura, ${s[2]}?`,ans:[String(s[3])],e:`${s[2]} usa el puerto ${s[3]}.`,ph:'número'};};
+
+/* Linux: comandos, directorios y permisos */
+const CMD=[['pwd','Muestra la ruta de trabajo actual'],['ls -la','Lista todos los archivos, incluidos los ocultos, con permisos'],['cd ..','Sube un nivel en la jerarquía de directorios'],['cd ~','Lleva al directorio personal del usuario'],['cat archivo.txt','Muestra el contenido completo de un archivo'],['less archivo.txt','Paginador interactivo para archivos extensos'],['head -n 20 archivo.txt','Muestra las primeras 20 líneas'],['tail -n 20 -f log.txt','Muestra las últimas 20 líneas y sigue el archivo en vivo'],['file binario','Determina el tipo real de archivo por su cabecera'],['strings binario','Extrae cadenas imprimibles de un binario'],['cp origen.txt destino','Copia archivos'],['mv viejo.txt nuevo.txt','Mueve o renombra archivos'],['rm -rf carpeta/','Elimina de forma forzada y recursiva'],['env','Muestra las variables de entorno activas'],['sudo -l','Muestra qué comandos puede ejecutar el usuario con sudo']];
+GEN.cmd=mcFrom(CMD,c=>`¿Qué hace el comando \`${c}\`?`,'val');
+const DIR=[['/home','Directorios personales de los usuarios regulares'],['/root','Directorio personal del superusuario'],['/bin','Binarios esenciales para todos los usuarios'],['/sbin','Binarios de administración del sistema (root)'],['/usr','Binarios, librerías y documentación secundarios de nivel de usuario'],['/etc','Archivos de configuración del sistema y de los servicios'],['/var','Datos variables: bitácoras, bases de datos y correos en cola'],['/tmp','Archivos temporales con permisos de escritura universal'],['/boot','Archivos de arranque: kernel e initramfs'],['/lib','Librerías compartidas esenciales'],['/dev','Nodos de dispositivos representados como archivos'],['/proc','Sistema de archivos virtual con el estado del kernel y los procesos']];
+GEN.dir=mcFrom(DIR,d=>`¿Para qué sirve el directorio \`${d}\`?`,'val');
+
+const PT=['---','--x','-w-','-wx','r--','r-x','rw-','rwx'];
+const BASE=[7,6,5,4,0,5,7,6,4,5];
+const permEx=n=>{const p=[['r',4],['w',2],['x',1]].filter((_,i)=>PT[n][i]!=='-');return p.length?`${PT[n]} = ${p.map(x=>x[1]).join(' + ')} = ${n}`:`${PT[n]} = 0`;};
+GEN.permDigit=r=>{const n=ri(r,0,7);return{t:'input',q:`¿Qué valor octal tiene \`${PT[n]}\`?`,ans:[String(n)],e:`r = 4, w = 2, x = 1. ${permEx(n)}.`,ph:'0–7'};};
+GEN.permOctal=r=>{const d=[ri(r,4,7),pick(r,BASE),pick(r,BASE)];const sym=d.map(n=>PT[n]).join('');const pre=r()<.5?'-':'';
+  return{t:'input',q:`¿Qué valor octal (chmod) equivale a \`${pre}${sym}\`?`,ans:[d.join('')],e:`${PT[d[0]]} = ${d[0]}, ${PT[d[1]]} = ${d[1]}, ${PT[d[2]]} = ${d[2]} → chmod ${d.join('')}.`,ph:'3 dígitos'};};
+GEN.octalToSym=r=>{const d=[ri(r,4,7),pick(r,BASE),pick(r,BASE)];const sym=d.map(n=>PT[n]).join('');
+  return{t:'input',q:`Escribe en notación simbólica \`chmod ${d.join('')}\` (ej. rwxr-xr--)`,ans:[sym,'-'+sym],e:`${d[0]} = ${PT[d[0]]}, ${d[1]} = ${PT[d[1]]}, ${d[2]} = ${PT[d[2]]} → ${sym}.`,ph:'rwxr-xr--'};};
+GEN.specialOctal=r=>{const sp=pick(r,[['SUID',4],['SGID',2],['Sticky Bit',1]]);const b=pick(r,['755','750','644','775','700']);const bs=b.split('').map(n=>PT[+n]).join('');
+  const obj=sp[0]==='Sticky Bit'?'directorio':'archivo';const ans=`${sp[1]}${b}`;
+  return{t:'input',q:`Un ${obj} con **${sp[0]}** y permisos base \`${bs}\`. ¿Cuál es su valor octal de 4 dígitos?`,ans:[ans],e:`${sp[0]} = ${sp[1]}000 → se antepone a ${b}: ${ans}.`,ph:'4 dígitos'};};
+
+
+/* ===== Estado ===== */
+const S={xp:0,streak:0,last:'',done:{},mist:[]};
+const LES={},ALL=[];
+UNITS.forEach(u=>u.lessons.forEach(l=>{l.u=u;LES[l.id]=l;ALL.push(l);}));
+const KEY='ruta-hacking-etico';
+function load(){try{const v=JSON.parse(localStorage.getItem(KEY)||'null');if(v)Object.assign(S,v);}catch(e){}}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(S));}catch(e){}}
+const today=()=>new Date().toLocaleDateString('en-CA');
+function touchStreak(){const t=today();if(S.last===t)return;const y=new Date(Date.now()-864e5).toLocaleDateString('en-CA');S.streak=S.last===y?S.streak+1:1;S.last=t;}
+const refKey=r=>{if(r.g)return `g:${r.g}:${r.s}`;const x=LES[r.l].ex[r.i];return typeof x==='string'?`${r.l}:${r.i}:${r.s}`:`${r.l}:${r.i}`;};
+
+function build(ref){
+  if(ref.g)return Object.assign({ref},GEN[ref.g](rng(ref.s)));
+  const x=LES[ref.l].ex[ref.i];
+  if(typeof x==='string')return Object.assign({ref},GEN[x.slice(2)](rng(ref.s)));
+  return Object.assign({ref},x);
+}
+function lessonRefs(l,n){return shuf(rnd,l.ex.map((_,i)=>i)).slice(0,n).map(i=>({l:l.id,i,s:seed()}));}
+const DRILLS=[
+ {id:'cia',name:'Tríada CIA',sub:'Escenarios y controles',gens:['cia','ctl'],cable:'blue'},
+ {id:'mal',name:'Malware y atacantes',sub:'Identifica el tipo',gens:['malware','hacker'],cable:'blue'},
+ {id:'lay',name:'Capas de defensa',sub:'Defensa en profundidad',gens:['layer'],cable:'blue'},
+ {id:'fwk',name:'Frameworks y fases',sub:'Kill Chain, PTES, NIST y ATT&CK',gens:['kill','ptes','nist','attck'],cable:'yellow'},
+ {id:'osi',name:'OSI y flags TCP',sub:'Capas, protocolos y flags',gens:['proto','flag'],cable:'green'},
+ {id:'prt',name:'Puertos y servicios',sub:'Puertos, rangos y variantes seguras',gens:['portSvc','svcPort','portRange','secureAlt'],cable:'green'},
+ {id:'ipm',name:'IP y MAC',sub:'Clasifica direcciones',gens:['pubPriv','reserved','mac'],cable:'green'},
+ {id:'cmd',name:'Comandos y directorios',sub:'Linux esencial',gens:['cmd','dir'],cable:'red'},
+ {id:'prm',name:'Permisos en Linux',sub:'Octal, simbólico y SUID/SGID/Sticky',gens:['permDigit','permOctal','octalToSym','specialOctal'],cable:'red'}];
+
+/* ===== Iconos ===== */
+const IC={
+ heart:'<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>',
+ flame:'<svg class="fl" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2c1 3.5 5 5.5 5 10a5 5 0 0 1-10 0c0-2 1-3.5 2-4.5 0 2 1 3 2 3 0-3-1-5 1-8.5z"/></svg>',
+ star:'<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2l2.9 6.3 6.9.8-5.1 4.7 1.4 6.8L12 17.3l-6.1 3.3 1.4-6.8-5.1-4.7 6.9-.8z"/></svg>',
+ xp:'<svg class="sr" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2l2.9 6.3 6.9.8-5.1 4.7 1.4 6.8L12 17.3l-6.1 3.3 1.4-6.8-5.1-4.7 6.9-.8z"/></svg>',
+ check:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+ x:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/></svg>',
+ path:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 20a2 2 0 1 0 0-4 2 2 0 0 0 0 4zM18 8a2 2 0 1 0 0-4 2 2 0 0 0 0 4zM6 16V9a3 3 0 0 1 3-3h7" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>',
+ redo:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 12a8 8 0 1 1-2.3-5.6M20 4v4h-4" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+ book:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h10a4 4 0 0 1 4 4v12H9a4 4 0 0 1-4-4V4zM5 16a4 4 0 0 1 4-4h10" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/></svg>'
+};
+const stars=n=>[1,2,3].map(i=>`<span class="st ${i<=n?'on':''}">${IC.star}</span>`).join('');
+
+/* ===== Pantallas principales ===== */
+let tab='ruta';
+const app=()=>$('#app');
+function renderHome(){
+  const total=ALL.length,n=ALL.filter(l=>S.done[l.id]).length,nx=ALL.find(l=>!S.done[l.id]);
+  let h=`<header class="hero"><h1>Ruta de Hacking Ético</h1><p>Fundamentos de ciberseguridad, redes y Linux</p>
+  <div class="stats"><span class="chip">${IC.flame}<b>${S.streak}</b> ${S.streak===1?'día':'días'} de racha</span><span class="chip">${IC.xp}<b>${S.xp}</b> XP</span></div>
+  <div class="prog" role="progressbar" aria-valuemin="0" aria-valuemax="${total}" aria-valuenow="${n}"><i style="width:${n/total*100}%"></i></div>
+  <p class="small">${n} de ${total} lecciones completadas</p></header>`;
+  if(nx)h+=`<div class="next u-${nx.u.cable}"><div><p class="small">Sigue con la lección ${nx.id}</p><h2>${nx.name}</h2></div><button class="btn" data-l="${nx.id}">Empezar</button></div>`;
+  else h+=`<div class="next u-green"><div><h2>Completaste toda la ruta</h2><p class="small">Refuerza lo aprendido en la pestaña Repaso.</p></div></div>`;
+  UNITS.forEach(u=>{
+    const dn=u.lessons.filter(l=>S.done[l.id]).length;
+    h+=`<section class="unit u-${u.cable}"><div class="uh"><div><h2>Unidad ${u.id}: ${u.name}</h2><p>${u.sub}</p></div><span class="cnt">${dn}/${u.lessons.length}</span></div><div class="path">`;
+    u.lessons.forEach(l=>{const d=S.done[l.id],isN=nx&&nx.id===l.id;
+      h+=`<button class="les" data-l="${l.id}"><span class="node${d?' done':''}${isN?' next':''}">${d?IC.check:l.id}</span><span class="lt"><b>${l.name}</b><small>${l.sub}</small></span><span class="sts" aria-label="${d?d.stars+' de 3 estrellas':'sin completar'}">${d?stars(d.stars):''}</span></button>`;});
+    h+='</div></section>';});
+  app().innerHTML=h;
+}
+function renderRep(){
+  const m=S.mist.length;
+  let h=`<div class="pg"><h1>Repaso</h1><p class="small">Refuerza lo que te falló y practica con preguntas nuevas cada vez.</p>
+  <div class="card u-red"><div><h2>Repasar mis errores</h2><p class="small">${m?`${m} ${m===1?'pregunta pendiente':'preguntas pendientes'}`:'No tienes errores pendientes'}</p></div><button class="btn" data-act="mist" ${m?'':'disabled'}>Repasar</button></div>
+  <div class="card u-purple"><div><h2>Examen final</h2><p class="small">20 preguntas de todos los temas de la guía</p></div><button class="btn" data-act="exam">Comenzar</button></div>
+  <h3>Prácticas rápidas</h3><div class="drills">`;
+  DRILLS.forEach(d=>{h+=`<button class="drill u-${d.cable}" data-drill="${d.id}"><b>${d.name}</b><small>${d.sub}</small></button>`;});
+  app().innerHTML=h+'</div></div>';
+}
+function renderGlo(){
+  app().innerHTML=`<div class="pg"><h1>Glosario</h1><p class="small">Todos los conceptos de la guía, en el orden de la ruta.</p><input class="search" id="q" type="search" placeholder="Buscar un concepto" aria-label="Buscar en el glosario" autocomplete="off"><div id="gl"></div></div>`;
+  const draw=()=>{const q=fold($('#q').value.trim());let h='',last=0;
+    GLOSS.filter(x=>!q||fold(x.t+' '+x.d).includes(q)).forEach(x=>{
+      if(x.u!==last){last=x.u;const u=UNITS[x.u-1];h+=`<div class="gu u-${u.cable}"><i></i>Unidad ${u.id}: ${u.name}</div>`;}
+      const u=UNITS[x.u-1];h+=`<div class="term u-${u.cable}"><b>${esc(x.t)}</b><span>${esc(x.d)}</span></div>`;});
+    $('#gl').innerHTML=h||'<p class="empty">No hay conceptos que coincidan con la búsqueda.</p>';};
+  $('#q').addEventListener('input',draw);draw();
+}
+function render(){({ruta:renderHome,repaso:renderRep,glosario:renderGlo})[tab]();
+  document.querySelectorAll('#nav button').forEach(b=>{if(b.dataset.tab===tab)b.setAttribute('aria-current','page');else b.removeAttribute('aria-current');});}
+function go(t){tab=t;render();window.scrollTo(0,0);}
+
+/* ===== Sesiones ===== */
+let ses=null;
+const lessonEl=()=>$('#lesson');
+const PRAISE=['¡Correcto!','¡Bien hecho!','¡Exacto!','¡Muy bien!'];
+function startSession(o){
+  ses=Object.assign({queue:o.refs.slice(),total:o.refs.length,done:0,first:0,xp:0,tries:new Set(),hearts:o.kind==='lesson'?5:null},o);
+  const el=lessonEl();el.className='u-'+(o.cable||'blue');el.hidden=false;document.body.style.overflow='hidden';
+  el.innerHTML='<div id="hud"></div><div id="stage" style="display:flex;flex-direction:column;flex:1;min-height:0"></div>';
+  nextEx();
+}
+function closeSession(){ses=null;const el=lessonEl();el.hidden=true;el.innerHTML='';document.body.style.overflow='';render();}
+function hudHtml(){const p=Math.round(ses.done/ses.total*100);
+  return `<header class="l-top"><button class="x" id="quit" aria-label="Salir de la sesión">${IC.x}</button><div class="bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${p}"><i style="width:${p}%"></i></div>${ses.hearts!==null?`<div class="hearts${ses.hearts<=1?' low':''}" aria-label="${ses.hearts} vidas">${IC.heart}<b>${ses.hearts}</b></div>`:''}</header>`;}
+function updHud(){$('#hud').innerHTML=hudHtml();$('#quit').onclick=askQuit;}
+function askQuit(){
+  const m=document.createElement('div');m.className='modal';m.setAttribute('role','dialog');m.setAttribute('aria-modal','true');
+  m.innerHTML='<div><h2>¿Salir de la sesión?</h2><p class="small">Perderás el avance de esta sesión.</p><button class="btn" id="stay">Seguir practicando</button><button class="btn ghost" id="leave">Salir</button></div>';
+  lessonEl().appendChild(m);$('#stay').focus();$('#stay').onclick=()=>m.remove();$('#leave').onclick=closeSession;
+}
+function nextEx(){
+  if(!ses.queue.length)return finish();
+  const ref=ses.queue.shift();ses.ref=ref;ses.ex=build(ref);ses.st={};ses.locked=false;
+  updHud();const x=ses.ex,st=ses.st;
+  const ins={mc:'Elige la respuesta correcta',tf:'Elige verdadero o falso',match:'Toca las parejas que van juntas',input:'Escribe la respuesta',bits:'Toca los bits para activarlos',order:'Toca los pasos en el orden correcto'}[x.t];
+  let body='';
+  if(x.t==='mc'){ses.opts=shuf(rnd,[x.a,...x.w]);body=ses.opts.map((o,i)=>`<button class="opt" data-i="${i}"><span class="k">${i+1}</span><span>${fmt(o)}</span></button>`).join('');}
+  else if(x.t==='tf'){body='<div class="tf"><button class="opt" data-i="1">Verdadero</button><button class="opt" data-i="0">Falso</button></div>';}
+  else if(x.t==='input'){const num=!x.check&&/^\d+$/.test(x.ans[0]);body=`<input class="txt" id="ans" type="text" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" inputmode="${num?'numeric':'text'}" placeholder="${esc(x.ph||'')}" aria-label="Tu respuesta">`;}
+  else if(x.t==='bits'){st.bits=Array(8).fill(0);body=`<div class="bits">${[128,64,32,16,8,4,2,1].map((w,i)=>`<button class="bit" data-b="${i}" aria-pressed="false"><span class="w">${w}</span><span class="v">0</span></button>`).join('')}</div><p class="sum" id="sum">Suma: <b>0</b></p>`;}
+  else if(x.t==='order'){st.seq=[];let idx=x.s.map((_,i)=>i),t=0;do{idx=shuf(rnd,idx);t++;}while(idx.every((v,i)=>v===i)&&t<10);st.pool=idx;body='<div class="zone" id="zone" aria-label="Tu orden"></div><div class="pool" id="pool"></div>';}
+  else if(x.t==='match'){st.l=null;st.m=new Set();st.err=0;st.r=shuf(rnd,x.p.map((_,i)=>i));
+    body=`<div class="mtc"><div>${x.p.map((p,i)=>`<button class="opt" data-ml="${i}" style="margin-bottom:10px">${fmt(p[0])}</button>`).join('')}</div><div>${st.r.map(i=>`<button class="opt" data-mr="${i}" style="margin-bottom:10px">${fmt(x.p[i][1])}</button>`).join('')}</div></div>`;}
+  $('#stage').innerHTML=`<main class="l-main"><p class="ins">${ins}</p><h2 class="l-q">${fmt(x.q)}</h2>${body}</main><footer class="l-foot" id="foot"><div class="foot-in"><button class="btn big" id="chk" disabled>${x.t==='match'?'Une todas las parejas':'Comprobar'}</button></div></footer>`;
+  bindEx();$('#quit').onclick=askQuit;$('#chk').onclick=check;
+  if(x.t==='input')$('#ans').focus();
+}
+function setChk(on){const c=$('#chk');if(c)c.disabled=!on;}
+function bindEx(){
+  const x=ses.ex,st=ses.st,main=$('.l-main');
+  if(x.t==='mc'||x.t==='tf'){main.querySelectorAll('.opt').forEach(b=>b.onclick=()=>{if(ses.locked)return;st.sel=x.t==='tf'?b.dataset.i==='1':+b.dataset.i;main.querySelectorAll('.opt').forEach(o=>o.classList.toggle('sel',o===b));setChk(true);});}
+  else if(x.t==='input'){$('#ans').addEventListener('input',e=>{st.val=e.target.value;setChk(e.target.value.trim()!=='');});}
+  else if(x.t==='bits'){setChk(true);main.querySelectorAll('.bit').forEach(b=>b.onclick=()=>{if(ses.locked)return;const i=+b.dataset.b;st.bits[i]^=1;b.classList.toggle('on',!!st.bits[i]);b.setAttribute('aria-pressed',!!st.bits[i]);b.querySelector('.v').textContent=st.bits[i];$('#sum').innerHTML=`Suma: <b>${bitsSum()}</b>`;});}
+  else if(x.t==='order'){drawOrder();}
+  else if(x.t==='match'){
+    const L=[...main.querySelectorAll('[data-ml]')],R=[...main.querySelectorAll('[data-mr]')];
+    L.forEach(b=>b.onclick=()=>{if(ses.locked||b.classList.contains('done'))return;st.l=+b.dataset.ml;L.forEach(o=>o.classList.toggle('sel',o===b));});
+    R.forEach(b=>b.onclick=()=>{if(ses.locked||b.classList.contains('done')||st.l===null)return;const ri_=+b.dataset.mr;
+      if(ri_===st.l){const lb=L[st.l];lb.classList.remove('sel');lb.classList.add('done');b.classList.add('done');st.m.add(st.l);st.l=null;
+        if(st.m.size===x.p.length)resolve(st.err===0,x.p.map(p=>`${fmt(p[0])} → ${fmt(p[1])}`).join('<br>'));}
+      else{st.err++;[L[st.l],b].forEach(o=>{o.classList.add('shake');setTimeout(()=>o.classList.remove('shake'),320);});L[st.l].classList.remove('sel');st.l=null;}});
+  }
+}
+const bitsSum=()=>ses.st.bits.reduce((a,v,i)=>a+(v?[128,64,32,16,8,4,2,1][i]:0),0);
+function drawOrder(){
+  const x=ses.ex,st=ses.st;
+  $('#zone').innerHTML=st.seq.map(i=>`<button class="chip2" data-z="${i}">${fmt(x.s[i])}</button>`).join('');
+  $('#pool').innerHTML=st.pool.filter(i=>!st.seq.includes(i)).map(i=>`<button class="chip2" data-p="${i}">${fmt(x.s[i])}</button>`).join('');
+  if(ses.locked)return;
+  $('#zone').querySelectorAll('button').forEach(b=>b.onclick=()=>{st.seq=st.seq.filter(i=>i!==+b.dataset.z);drawOrder();});
+  $('#pool').querySelectorAll('button').forEach(b=>b.onclick=()=>{st.seq.push(+b.dataset.p);drawOrder();});
+  setChk(st.seq.length===x.s.length);
+}
+function evaluate(){
+  const x=ses.ex,st=ses.st;
+  if(x.t==='mc')return{ok:ses.opts[st.sel]===x.a,show:fmt(x.a)};
+  if(x.t==='tf')return{ok:st.sel===x.a,show:x.a?'Verdadero':'Falso'};
+  if(x.t==='input'){const v=st.val||'';const ok=x.check?x.check(v):x.ans.some(a=>norm(a)===norm(v));return{ok,show:`<code>${esc(x.show||x.ans[0])}</code>`};}
+  if(x.t==='bits'){return{ok:bitsSum()===x.n,show:`${x.n} = <code>${bin8(x.n)}</code>`};}
+  if(x.t==='order'){return{ok:st.seq.every((v,i)=>v===i),show:x.s.map((s,i)=>`${i+1}. ${fmt(s)}`).join('<br>')};}
+}
+function check(){if(ses.locked)return;const r=evaluate();resolve(r.ok,r.show);}
+function resolve(ok,showHtml){
+  if(ses.locked)return;ses.locked=true;const x=ses.ex,k=refKey(ses.ref),retry=ses.tries.has(k);
+  const main=$('.l-main');
+  main.querySelectorAll('.opt,.bit,.chip2').forEach(b=>{if(b.tagName==='BUTTON')b.style.pointerEvents='none';});
+  if(x.t==='mc'){const c=ses.opts.indexOf(x.a);main.querySelectorAll('.opt').forEach((o,i)=>{if(i===c)o.classList.add('right');else if(o.classList.contains('sel'))o.classList.add('wrong');});}
+  if(x.t==='tf'){main.querySelectorAll('.opt').forEach(o=>{const v=o.dataset.i==='1';if(v===x.a)o.classList.add('right');else if(o.classList.contains('sel'))o.classList.add('wrong');});}
+  if(x.t==='input'){const a=$('#ans');a.disabled=true;a.classList.add(ok?'right':'wrong');}
+  if(ok){ses.done++;ses.xp+=retry?5:10;if(!retry)ses.first++;
+    if(ses.kind==='mistakes'&&!retry)S.mist=S.mist.filter(m=>refKey(m)!==k);}
+  else{
+    if(ses.hearts!==null)ses.hearts--;
+    if(!S.mist.some(m=>refKey(m)===k))S.mist.push(Object.assign({},ses.ref));
+    if(!retry){ses.tries.add(k);ses.queue.push(ses.ref);}else ses.done++;
+  }
+  save();updHud();
+  const f=$('#foot');f.className='l-foot '+(ok?'good':'bad');f.setAttribute('aria-live','polite');
+  const dead=ses.hearts!==null&&ses.hearts<=0;
+  f.innerHTML=`<div class="foot-in"><div class="fb"><strong>${ok?pick(rnd,PRAISE):'Respuesta correcta'}</strong>${ok?'':`<div class="ans">${showHtml}</div>`}${x.e?`<p>${fmt(x.e)}</p>`:''}</div><button class="btn big" id="cont">Continuar</button></div>`;
+  $('#cont').onclick=()=>dead?failScreen():nextEx();$('#cont').focus();
+}
+function endScreen(html){$('#hud').innerHTML='';$('#stage').innerHTML=`<div class="end">${html}</div>`;}
+function failScreen(){
+  endScreen(`<h1>Te quedaste sin vidas</h1><p class="small">Repasa la explicación de cada respuesta y vuelve a intentarlo: las preguntas cambian cada vez.</p><button class="btn" id="again">Intentar de nuevo</button><button class="btn ghost" id="out">Salir</button>`);
+  $('#again').onclick=()=>{const l=LES[ses.lid];startSession({kind:'lesson',title:l.name,lid:l.id,cable:l.u.cable,refs:lessonRefs(l,10)});};$('#out').onclick=closeSession;
+}
+function finish(){
+  const acc=Math.round(ses.first/ses.total*100),st=acc>=90?3:acc>=70?2:1;let bonus=0;
+  touchStreak();
+  if(ses.kind==='lesson'){bonus=20;const prev=S.done[ses.lid];S.done[ses.lid]={stars:Math.max(prev?prev.stars:0,st)};}
+  S.xp+=ses.xp+bonus;save();
+  const nxt=ses.kind==='lesson'?ALL.find(l=>!S.done[l.id]):null;
+  const titles={lesson:'¡Lección completada!',mistakes:'¡Repaso terminado!',exam:'¡Examen terminado!',drill:'¡Práctica terminada!'};
+  endScreen(`<h1>${titles[ses.kind]}</h1><div class="bigst" aria-label="${st} de 3 estrellas">${[1,2,3].map(i=>`<span class="${i<=st?'on':''}">${IC.star}</span>`).join('')}</div>
+  <div class="res"><div><b>${ses.xp+bonus}</b><span>XP ganada</span></div><div><b>${acc}%</b><span>Al primer intento</span></div></div>
+  ${nxt?`<button class="btn" id="nx">Siguiente: ${nxt.name}</button><button class="btn ghost" id="bk">Volver</button>`:`<button class="btn" id="bk">Continuar</button>`}`);
+  if(nxt)$('#nx').onclick=()=>{const l=nxt;startSession({kind:'lesson',title:l.name,lid:l.id,cable:l.u.cable,refs:lessonRefs(l,10)});};
+  $('#bk').onclick=closeSession;$('#bk').focus();
+}
+
+/* ===== Arranque de sesiones ===== */
+function startLesson(id){const l=LES[id];startSession({kind:'lesson',title:l.name,lid:id,cable:l.u.cable,refs:lessonRefs(l,10)});}
+function startDrill(id){const d=DRILLS.find(x=>x.id===id);const order=shuf(rnd,d.gens);
+  startSession({kind:'drill',title:d.name,cable:d.cable,refs:Array.from({length:10},(_,k)=>({g:order[k%order.length],s:seed()}))});}
+function startExam(){const pool=[];ALL.forEach(l=>l.ex.forEach((_,i)=>pool.push({l:l.id,i,s:seed()})));
+  startSession({kind:'exam',title:'Examen final',cable:'purple',refs:shuf(rnd,pool).slice(0,20)});}
+function startMist(){const refs=shuf(rnd,S.mist).slice(0,10).map(r=>Object.assign({},r));if(refs.length)startSession({kind:'mistakes',title:'Repaso de errores',cable:'red',refs});}
+
+function init(){
+  load();
+  document.addEventListener('click',e=>{
+    const a=e.target.closest('[data-l],[data-drill],[data-act]');if(!a||!$('#app').contains(a))return;
+    if(a.dataset.l)startLesson(a.dataset.l);else if(a.dataset.drill)startDrill(a.dataset.drill);
+    else if(a.dataset.act==='exam')startExam();else if(a.dataset.act==='mist')startMist();
+  });
+  document.querySelectorAll('#nav button').forEach(b=>b.onclick=()=>go(b.dataset.tab));
+  document.addEventListener('keydown',e=>{
+    if(!ses||lessonEl().hidden)return;
+    if(lessonEl().querySelector('.modal'))return;
+    if(e.key==='Enter'){const c=$('#cont')||$('#chk');if(c&&!c.disabled){e.preventDefault();c.click();}else if(c){e.preventDefault();}}
+    else if(/^[1-4]$/.test(e.key)&&ses.ex&&ses.ex.t==='mc'&&!ses.locked&&document.activeElement.tagName!=='INPUT'){const b=lessonEl().querySelector(`.opt[data-i="${+e.key-1}"]`);if(b)b.click();}
+  });
+  render();
+}
+if(typeof document!=='undefined'&&document.addEventListener)document.addEventListener('DOMContentLoaded',init);
+
+</script>
+</body>
+</html>
